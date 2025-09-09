@@ -76,14 +76,25 @@
                                                     </div>
                                                 </div>
 
-                                                @if($userApplication)
-                                                    @if($userApplication->beasiswa_id == $beasiswa->id)
-                                                        <a href="{{ route('status') }}" class="carousel-cta-btn inline-flex items-center px-8 py-4 bg-white bg-opacity-95 text-gray-800 font-semibold rounded-full border-none transition-all duration-300 shadow-lg hover:bg-white hover:-translate-y-1 hover:shadow-2xl hover:text-teal-500 uppercase tracking-wider">
-                                                            <i class="fas fa-check-circle mr-2"></i>Lihat Status Pendaftaran
-                                                        </a>
-                                                    @else
-                                                        <button class="inline-flex items-center px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full opacity-75 cursor-not-allowed" disabled title="Anda sudah mendaftar di beasiswa {{ $registeredBeasiswa->nama_beasiswa }}">
+                                                @php
+                                                    // Get specific application for this scholarship in carousel
+                                                    $thisCarouselApplication = $userApplications->get($beasiswa->id);
+                                                @endphp
+
+                                                @if($thisCarouselApplication)
+                                                    <!-- User has application for THIS beasiswa -->
+                                                    <a href="{{ route('status') }}" class="carousel-cta-btn inline-flex items-center px-8 py-4 bg-white bg-opacity-95 text-gray-800 font-semibold rounded-full border-none transition-all duration-300 shadow-lg hover:bg-white hover:-translate-y-1 hover:shadow-2xl hover:text-teal-500 uppercase tracking-wider">
+                                                        <i class="fas fa-check-circle mr-2"></i>Lihat Status Pendaftaran
+                                                    </a>
+                                                @elseif($activeUserApplication)
+                                                    <!-- User has active application in OTHER beasiswa -->
+                                                    @if($activeUserApplication->status == 'pending')
+                                                        <button class="inline-flex items-center px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full opacity-75 cursor-not-allowed" disabled title="Anda sudah mendaftar di beasiswa {{ $registeredBeasiswa ? $registeredBeasiswa->nama_beasiswa : 'lain' }}">
                                                             <i class="fas fa-user-check mr-2"></i>Sudah Mendaftar Beasiswa Lain
+                                                        </button>
+                                                    @elseif($activeUserApplication->status == 'diterima')
+                                                        <button class="inline-flex items-center px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full opacity-75 cursor-not-allowed" disabled title="Anda sudah diterima di beasiswa {{ $registeredBeasiswa ? $registeredBeasiswa->nama_beasiswa : 'lain' }}">
+                                                            <i class="fas fa-check-circle mr-2"></i>Sudah Diterima Beasiswa Lain
                                                         </button>
                                                     @endif
                                                 @elseif($beasiswa->isActive())
@@ -150,7 +161,22 @@
         @if($beasiswas->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($beasiswas as $beasiswa)
-                    <div class="scholarship-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden relative group animate-fadeInUp @if($userApplication && $userApplication->beasiswa_id != $beasiswa->id) opacity-70 grayscale-20 @endif">
+                    @php
+                        // Get specific application for this scholarship
+                        $thisBeasiswaApplication = $userApplications->get($beasiswa->id);
+
+                        // Determine if this card should be disabled
+                        $shouldDisableCard = false;
+                        if ($activeUserApplication) {
+                            // Disable if user has pending OR accepted application in OTHER scholarship
+                            if (($activeUserApplication->status == 'pending' || $activeUserApplication->status == 'diterima')
+                                && $activeUserApplication->beasiswa_id != $beasiswa->id) {
+                                $shouldDisableCard = true;
+                            }
+                        }
+                    @endphp
+
+                    <div class="scholarship-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden relative group animate-fadeInUp @if($shouldDisableCard) opacity-70 grayscale-20 @endif">
                         <!-- Top gradient line -->
                         <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
 
@@ -158,10 +184,20 @@
                         <div class="p-4 pb-2">
                             <div class="mb-3">
                                 <div class="scholarship-badge">
-                                    @if($userApplication && $userApplication->beasiswa_id == $beasiswa->id)
-                                        <span class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white text-sm font-semibold rounded-full shadow-lg animate-pulse">
-                                            <i class="fas fa-check-circle mr-1.5 text-xs"></i>Terdaftar
-                                        </span>
+                                    @if($thisBeasiswaApplication)
+                                        @if($thisBeasiswaApplication->status == 'pending')
+                                            <span class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white text-sm font-semibold rounded-full shadow-lg animate-pulse">
+                                                <i class="fas fa-clock mr-1.5 text-xs"></i>Pending
+                                            </span>
+                                        @elseif($thisBeasiswaApplication->status == 'diterima')
+                                            <span class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold rounded-full shadow-lg">
+                                                <i class="fas fa-check-circle mr-1.5 text-xs"></i>Diterima
+                                            </span>
+                                        @elseif($thisBeasiswaApplication->status == 'ditolak')
+                                            <span class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-semibold rounded-full shadow-lg">
+                                                <i class="fas fa-times-circle mr-1.5 text-xs"></i>Ditolak
+                                            </span>
+                                        @endif
                                     @elseif($beasiswa->isActive())
                                         <span class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-semibold rounded-full shadow-lg">
                                             <i class="fas fa-circle mr-1.5 text-xs"></i>Aktif
@@ -177,8 +213,14 @@
                             <div class="flex justify-between items-start">
                                 <h5 class="text-xl font-bold text-gray-800 leading-tight flex-1 pr-3">{{ $beasiswa->nama_beasiswa }}</h5>
                                 <div class="text-2xl text-teal-500 opacity-80 flex-shrink-0">
-                                    @if($userApplication && $userApplication->beasiswa_id == $beasiswa->id)
-                                        <i class="fas fa-medal text-yellow-500"></i>
+                                    @if($thisBeasiswaApplication)
+                                        @if($thisBeasiswaApplication->status == 'diterima')
+                                            <i class="fas fa-medal text-yellow-500"></i>
+                                        @elseif($thisBeasiswaApplication->status == 'ditolak')
+                                            <i class="fas fa-times-circle text-red-500"></i>
+                                        @else
+                                            <i class="fas fa-clock text-blue-500"></i>
+                                        @endif
                                     @else
                                         <i class="fas fa-trophy"></i>
                                     @endif
@@ -259,22 +301,33 @@
                             </div>
                         </div>
 
-                        <!-- Card Footer - Only show button if user can take action -->
+                        <!-- Card Footer - Button logic based on status -->
                         <div class="px-4 pb-4">
-                            @if($userApplication)
-                                @if($userApplication->beasiswa_id == $beasiswa->id)
-                                    <a href="{{ route('status') }}" class="btn-scholarship w-full flex items-center justify-center py-3 px-5 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:from-cyan-600 hover:to-cyan-700 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden group">
-                                        <i class="fas fa-eye mr-2"></i>Lihat Status
-                                        <div class="btn-shine absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white via-opacity-30 to-transparent group-hover:left-[100%] transition-all duration-500"></div>
-                                    </a>
+                            @if($thisBeasiswaApplication)
+                                <!-- User has application for THIS beasiswa -->
+                                <a href="{{ route('status') }}" class="btn-scholarship w-full flex items-center justify-center py-3 px-5 bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:from-cyan-600 hover:to-cyan-700 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden group">
+                                    <i class="fas fa-eye mr-2"></i>Lihat Status
+                                    <div class="btn-shine absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white via-opacity-30 to-transparent group-hover:left-[100%] transition-all duration-500"></div>
+                                </a>
+                            @elseif($activeUserApplication)
+                                <!-- User has active application in OTHER beasiswa -->
+                                @if($activeUserApplication->status == 'pending')
+                                    <button class="w-full flex items-center justify-center py-3 px-5 bg-gray-300 text-gray-600 font-semibold rounded-xl cursor-not-allowed" disabled title="Anda sudah mendaftar di beasiswa {{ $registeredBeasiswa ? $registeredBeasiswa->nama_beasiswa : 'lain' }}">
+                                        <i class="fas fa-user-check mr-2"></i>Sudah Mendaftar Beasiswa Lain
+                                    </button>
+                                @elseif($activeUserApplication->status == 'diterima')
+                                    <button class="w-full flex items-center justify-center py-3 px-5 bg-gray-300 text-gray-600 font-semibold rounded-xl cursor-not-allowed" disabled title="Anda sudah diterima di beasiswa {{ $registeredBeasiswa ? $registeredBeasiswa->nama_beasiswa : 'lain' }}">
+                                        <i class="fas fa-check-circle mr-2"></i>Sudah Diterima Beasiswa Lain
+                                    </button>
                                 @endif
-                                {{-- Removed: "Sudah Mendaftar" button for other scholarships --}}
                             @elseif($beasiswa->isActive())
+                                <!-- Normal registration for users with no active application -->
                                 <a href="{{ route('pendaftar.create', $beasiswa) }}" class="btn-scholarship w-full flex items-center justify-center py-3 px-5 bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:from-teal-600 hover:to-blue-700 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden group">
                                     <i class="fas fa-paper-plane mr-2"></i>Daftar Sekarang
                                     <div class="btn-shine absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white via-opacity-30 to-transparent group-hover:left-[100%] transition-all duration-500"></div>
                                 </a>
                             @else
+                                <!-- Scholarship is not active -->
                                 <button class="w-full flex items-center justify-center py-3 px-5 bg-gray-300 text-gray-600 font-semibold rounded-xl cursor-not-allowed" disabled>
                                     <i class="fas fa-lock mr-2"></i>Pendaftaran Ditutup
                                 </button>
@@ -562,6 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 userRegistrationAlert.style.opacity = '0.7';
             }
         }, 10000);
+
     }
 });
 </script>
