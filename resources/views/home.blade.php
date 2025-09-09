@@ -147,15 +147,6 @@
 
     <!-- Beasiswa List -->
     <div class="w-full" id="beasiswa-list">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-graduation-cap text-teal-500 mr-4"></i>Beasiswa Tersedia
-            </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Jelajahi berbagai program beasiswa yang dapat membantu mewujudkan impian pendidikan Anda
-            </p>
-        </div>
-
         @if($beasiswas->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($beasiswas as $beasiswa)
