@@ -28,9 +28,17 @@ Route::get('/test-404', function () {
 
 Route::get('/beasiswa/{beasiswa}/daftar', [PendaftarController::class, 'create'])->name('pendaftar.create');
 Route::post('/beasiswa/{beasiswa}/daftar', [PendaftarController::class, 'store'])->name('pendaftar.store');
+Route::get('/resubmit/{pendaftar}', [HomeController::class, 'editForResubmit'])
+    ->name('pendaftar.resubmit')
+    ->middleware('auth');
+Route::put('/resubmit/{pendaftar}', [HomeController::class, 'resubmit'])
+    ->name('pendaftar.resubmit.store')
+    ->middleware('auth');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/pendaftar/{pendaftar}/rejection-history', [AdminPendaftarController::class, 'getRejectionHistory'])
+        ->name('pendaftar.rejection-history');
 
     Route::resource('beasiswa', AdminBeasiswaController::class);
     Route::resource('pendaftar', AdminPendaftarController::class)->except(['create', 'store', 'edit', 'update']);

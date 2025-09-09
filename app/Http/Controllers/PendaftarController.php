@@ -46,16 +46,16 @@ class PendaftarController extends Controller
                            ->with('error', 'Pendaftaran beasiswa sudah ditutup atau tidak aktif.');
         }
 
-        // Custom validation rules
+        // Updated validation rules untuk handle resubmit scenario
         $validated = $request->validate([
             'nama_lengkap' => 'required|string|max:255',
             'nim' => [
                 'required',
                 'string',
                 'max:20',
-                // Custom rule untuk cek NIM yang masih aktif (pending/diterima)
                 Rule::unique('pendaftars', 'nim')->where(function ($query) {
-                    return $query->whereIn('status', ['pending', 'diterima']);
+                    return $query->whereIn('status', ['pending', 'diterima'])
+                                 ->where('email', '!=', Auth::user()->email);
                 })
             ],
             'email' => 'required|email|max:255',
@@ -66,7 +66,7 @@ class PendaftarController extends Controller
             'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5048',
         ], [
             // Custom error messages
-            'nim.unique' => 'NIM ini sedang digunakan dalam pendaftaran beasiswa yang masih aktif (pending/diterima). Silakan tunggu hingga proses selesai.',
+            'nim.unique' => 'NIM ini sedang digunakan oleh pendaftar lain dalam beasiswa yang masih aktif.',
         ]);
 
         // Pastikan email sama dengan email user yang login
@@ -83,18 +83,7 @@ class PendaftarController extends Controller
 
         if ($existingApplicationByEmail) {
             return redirect()->route('home')
-                           ->with('error', 'Anda masih memiliki aplikasi beasiswa yang aktif.');
-        }
-
-        // Additional check: Pastikan NIM tidak sedang digunakan di pendaftaran aktif lainnya
-        $existingNIMActive = Pendaftar::where('nim', $validated['nim'])
-                                     ->whereIn('status', ['pending', 'diterima'])
-                                     ->first();
-
-        if ($existingNIMActive) {
-            return redirect()->back()
-                           ->withInput()
-                           ->with('error', 'NIM ini sedang digunakan dalam pendaftaran beasiswa yang masih aktif. Silakan tunggu hingga proses selesai.');
+                           ->with('error', 'Anda masih memiliki beasiswa yang aktif.');
         }
 
         // Upload files
@@ -119,7 +108,7 @@ class PendaftarController extends Controller
     }
 
     /**
-     * Method untuk cek status NIM (optional - untuk debugging atau informasi)
+     * Method untuk cek status NIM (updated untuk handle resubmit)
      */
     public function checkNIMStatus($nim)
     {
@@ -130,6 +119,7 @@ class PendaftarController extends Controller
 
         $activeApplication = $applications->whereIn('status', ['pending', 'diterima'])->first();
         $rejectedApplications = $applications->where('status', 'ditolak');
+        $resubmittableApplications = $rejectedApplications->where('can_resubmit', true);
 
         return response()->json([
             'nim' => $nim,
@@ -137,7 +127,9 @@ class PendaftarController extends Controller
             'active_application' => $activeApplication,
             'total_applications' => $applications->count(),
             'rejected_applications_count' => $rejectedApplications->count(),
-            'can_apply' => is_null($activeApplication), // Bisa daftar jika tidak ada aplikasi aktif
+            'resubmittable_applications_count' => $resubmittableApplications->count(),
+            'can_apply_new' => is_null($activeApplication),
+            'has_resubmittable' => $resubmittableApplications->isNotEmpty(), 
         ]);
     }
 }

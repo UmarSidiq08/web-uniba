@@ -44,6 +44,40 @@
                 </div>
             </div>
             <div class="p-6">
+
+                {{-- Rejection Info Section - Show if rejected --}}
+                @if($pendaftar->isRejected() && $pendaftar->rejection_reason)
+                <div class="mb-6 pl-4 border-l-4 border-red-500">
+                    <h6 class="text-base font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-200">
+                        <i class="fas fa-exclamation-circle text-red-500 mr-2"></i>Informasi Penolakan
+                    </h6>
+                    <div class="bg-gradient-to-r from-red-50 to-white border border-red-200 rounded-lg p-6 shadow-sm">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-600 mb-2">Alasan Penolakan</label>
+                            <p class="text-red-800 bg-red-100 p-3 rounded-md italic">{{ $pendaftar->rejection_reason }}</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Status Submit Ulang</label>
+                                @if($pendaftar->can_resubmit)
+                                    <span class="inline-flex items-center px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                        <i class="fas fa-redo mr-1"></i>Dapat Submit Ulang
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
+                                        <i class="fas fa-ban mr-1"></i>Ditolak Permanen
+                                    </span>
+                                @endif
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Ditolak Pada</label>
+                                <p class="text-gray-900">{{ $pendaftar->rejection_date ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Personal Info Section -->
                 <div class="mb-6 pl-4 border-l-4 border-teal-500">
                     <h6 class="text-base font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-200">
@@ -160,7 +194,7 @@
                 </h6>
             </div>
             <div class="p-6">
-                <form action="{{ route('admin.pendaftar.update-status', $pendaftar) }}" method="POST">
+                <form action="{{ route('admin.pendaftar.update-status', $pendaftar) }}" method="POST" id="statusForm">
                     @csrf
                     @method('PATCH')
 
@@ -168,7 +202,7 @@
                         <label class="block font-medium text-gray-700 mb-2">
                             <i class="fas fa-edit mr-2"></i>Update Status
                         </label>
-                        <select name="status" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
+                        <select name="status" id="statusSelect" class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent" required>
                             <option value="pending" {{ $pendaftar->status == 'pending' ? 'selected' : '' }}>
                                 Pending
                             </option>
@@ -179,6 +213,55 @@
                                 Ditolak
                             </option>
                         </select>
+                    </div>
+
+                    {{-- Rejection Fields - Show only when ditolak is selected --}}
+                    <div id="rejectionFields" class="mb-4" style="display: {{ $pendaftar->status == 'ditolak' ? 'block' : 'none' }};">
+                        <div class="mb-4">
+                            <label class="block font-medium text-gray-700 mb-2">
+                                <i class="fas fa-comment-alt mr-2 text-red-500"></i>Alasan Penolakan <span class="text-red-500">*</span>
+                            </label>
+                            <textarea name="rejection_reason"
+                                     id="rejectionReason"
+                                     rows="4"
+                                     class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
+                                     placeholder="Masukkan alasan penolakan (minimal 10 karakter)"
+                                     minlength="10"
+                                     maxlength="1000">{{ old('rejection_reason', $pendaftar->rejection_reason) }}</textarea>
+                            <div class="text-xs text-gray-500 mt-1">
+                                <span id="charCount">0</span>/1000 karakter (minimal 10)
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block font-medium text-gray-700 mb-3">
+                                <i class="fas fa-question-circle mr-2 text-blue-500"></i>Status Submit Ulang <span class="text-red-500">*</span>
+                            </label>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-blue-50 transition-colors duration-200">
+                                    <input type="radio"
+                                           name="can_resubmit"
+                                           value="1"
+                                           class="text-blue-600 mr-3"
+                                           {{ old('can_resubmit', $pendaftar->can_resubmit) == '1' ? 'checked' : '' }}>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Dapat Submit Ulang</div>
+                                        <div class="text-sm text-gray-600">User dapat mengedit dan mengajukan kembali</div>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-red-50 transition-colors duration-200">
+                                    <input type="radio"
+                                           name="can_resubmit"
+                                           value="0"
+                                           class="text-red-600 mr-3"
+                                           {{ old('can_resubmit', $pendaftar->can_resubmit) == '0' ? 'checked' : '' }}>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Ditolak Permanen</div>
+                                        <div class="text-sm text-gray-600">User tidak dapat mengajukan kembali</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -203,6 +286,35 @@
                 </div>
             </div>
         </div>
+
+        {{-- Rejection History Card --}}
+        @if($rejectionHistories && $rejectionHistories->count() > 0)
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="bg-white px-6 py-4 border-b border-gray-200">
+                <h6 class="font-semibold text-gray-900">
+                    <i class="fas fa-history text-red-500 mr-2"></i>Riwayat Penolakan
+                </h6>
+            </div>
+            <div class="p-6 max-h-80 overflow-y-auto">
+                @foreach($rejectionHistories as $history)
+                <div class="mb-4 p-4 border border-red-200 rounded-lg bg-red-50">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs text-red-600 font-medium">{{ $history->formatted_rejected_at }}</span>
+                        @if($history->can_resubmit)
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Dapat Resubmit</span>
+                        @else
+                            <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">Permanen</span>
+                        @endif
+                    </div>
+                    <p class="text-sm text-red-800 italic">{{ $history->rejection_reason }}</p>
+                    @if($history->rejected_by)
+                        <p class="text-xs text-gray-600 mt-2">Oleh: {{ $history->rejected_by }}</p>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
 
         <!-- Statistics Card -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
@@ -244,27 +356,89 @@
 <!-- Custom JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const statusSelect = document.getElementById('statusSelect');
+    const rejectionFields = document.getElementById('rejectionFields');
+    const rejectionReason = document.getElementById('rejectionReason');
+    const charCount = document.getElementById('charCount');
+    const statusForm = document.getElementById('statusForm');
+
+    // Toggle rejection fields visibility
+    function toggleRejectionFields() {
+        if (statusSelect.value === 'ditolak') {
+            rejectionFields.style.display = 'block';
+            rejectionReason.required = true;
+        } else {
+            rejectionFields.style.display = 'none';
+            rejectionReason.required = false;
+            rejectionReason.value = '';
+            // Uncheck radio buttons
+            document.querySelectorAll('input[name="can_resubmit"]').forEach(radio => {
+                radio.checked = false;
+            });
+        }
+    }
+
+    // Character count for rejection reason
+    function updateCharCount() {
+        const count = rejectionReason.value.length;
+        charCount.textContent = count;
+
+        if (count < 10) {
+            charCount.parentElement.className = 'text-xs text-red-500 mt-1';
+        } else {
+            charCount.parentElement.className = 'text-xs text-gray-500 mt-1';
+        }
+    }
+
+    // Event listeners
+    statusSelect.addEventListener('change', toggleRejectionFields);
+    rejectionReason.addEventListener('input', updateCharCount);
+
+    // Form validation
+    statusForm.addEventListener('submit', function(e) {
+        if (statusSelect.value === 'ditolak') {
+            const reason = rejectionReason.value.trim();
+            const canResubmit = document.querySelector('input[name="can_resubmit"]:checked');
+
+            if (!reason || reason.length < 10) {
+                e.preventDefault();
+                alert('Alasan penolakan minimal 10 karakter!');
+                rejectionReason.focus();
+                return false;
+            }
+
+            if (!canResubmit) {
+                e.preventDefault();
+                alert('Pilih status submit ulang!');
+                return false;
+            }
+
+            // Konfirmasi penolakan
+            if (!confirm(`Konfirmasi penolakan?\n\nAlasan: ${reason.substring(0, 100)}${reason.length > 100 ? '...' : ''}\nStatus: ${canResubmit.value == '1' ? 'Dapat submit ulang' : 'Ditolak permanen'}`)) {
+                e.preventDefault();
+                return false;
+            }
+        }
+
+        // Loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
+
+        setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+        }, 3000);
+    });
+
+    // Initialize
+    toggleRejectionFields();
+    updateCharCount();
+
     // Print functionality
     window.printData = function() {
         window.print();
-    }
-
-    // Enhanced form submission with loading state
-    const statusForm = document.querySelector('form[method="POST"]');
-    if (statusForm && !statusForm.querySelector('input[name="_method"][value="DELETE"]')) {
-        statusForm.addEventListener('submit', function(e) {
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
-
-            // Re-enable button after 3 seconds as fallback
-            setTimeout(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-            }, 3000);
-        });
     }
 
     // Auto-resize reason text if too long
@@ -320,6 +494,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .scrollable-content::-webkit-scrollbar-thumb:hover {
     background: #00a693;
+}
+
+/* Rejection fields animation */
+#rejectionFields {
+    transition: all 0.3s ease-in-out;
 }
 </style>
 @endsection

@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-3 col-md-6 mb-3">
         <div class="card border-0 bg-success text-white shadow-sm">
             <div class="card-body">
@@ -58,7 +58,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-3 col-md-6 mb-3">
         <div class="card border-0 bg-info text-white shadow-sm">
             <div class="card-body">
@@ -79,7 +79,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-xl-3 col-md-6 mb-3">
         <div class="card border-0 bg-warning text-white shadow-sm">
             <div class="card-body">
@@ -137,7 +137,7 @@
                             </small>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-4 mb-3">
                         <div class="status-card bg-success-soft p-4 rounded-3 h-100 border">
                             <div class="status-icon mb-3">
@@ -157,7 +157,7 @@
                             </small>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-4 mb-3">
                         <div class="status-card bg-danger-soft p-4 rounded-3 h-100 border">
                             <div class="status-icon mb-3">
@@ -208,7 +208,7 @@
                             </div>
                         </div>
                     </a>
-                    
+
                     <a href="{{ route('admin.beasiswa.index') }}" class="btn btn-primary btn-lg text-start text-decoration-none">
                         <div class="d-flex align-items-center">
                             <div class="me-3">
@@ -225,7 +225,7 @@
                             </div>
                         </div>
                     </a>
-                    
+
                     <a href="{{ route('admin.pendaftar.index') }}" class="btn btn-info btn-lg text-start text-decoration-none">
                         <div class="d-flex align-items-center">
                             <div class="me-3">
@@ -235,7 +235,7 @@
                             </div>
                             <div class="flex-grow-1">
                                 <div class="fw-bold">Kelola Pendaftar</div>
-                                <small class="opacity-75">Review aplikasi beasiswa</small>
+                                <small class="opacity-75">Review beasiswa</small>
                             </div>
                             <div>
                                 <i class="fas fa-arrow-right"></i>
@@ -411,27 +411,27 @@
     .card {
         margin-bottom: 1rem;
     }
-    
+
     .btn-lg {
         font-size: 1rem;
         padding: 0.75rem 1rem;
     }
-    
+
     .status-card {
         margin-bottom: 1rem;
     }
-    
+
     .avatar-initial {
         width: 35px !important;
         height: 35px !important;
         font-size: 12px;
     }
-    
+
     .icon-circle {
         width: 45px !important;
         height: 45px !important;
     }
-    
+
     .quick-action-icon {
         width: 35px !important;
         height: 35px !important;
@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const increment = Math.max(1, target / 50);
         const duration = 1500;
         const stepTime = duration / 50;
-        
+
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -476,13 +476,13 @@ document.addEventListener('DOMContentLoaded', function() {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     }
-    
+
     // Add smooth animations to all cards
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => {
         card.style.transition = 'all 0.3s ease';
     });
-    
+
     // Real-time clock update
     function updateClock() {
         const now = new Date();
@@ -490,17 +490,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const clockElements = document.querySelectorAll('.system-clock');
         clockElements.forEach(el => el.textContent = timeString);
     }
-    
+
     setInterval(updateClock, 1000);
     updateClock();
-    
+
     // Enhanced hover effects for stats cards
     document.querySelectorAll('.card.bg-primary, .card.bg-success, .card.bg-info, .card.bg-warning').forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-3px)';
             this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.15)';
         });
-        
+
         card.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0)';
             this.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
