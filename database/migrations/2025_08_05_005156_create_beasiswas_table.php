@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('tanggal_tutup');
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->text('persyaratan');
+            $table->json('required_documents')->nullable();
             $table->timestamps();
         });
     }

@@ -84,7 +84,7 @@
                         <i class="fas fa-user-circle text-blue-400 mr-2"></i>Data Personal
                     </h6>
                     <div class="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-600 mb-1">Nama Lengkap</label>
                                 <p class="text-gray-900">{{ $pendaftar->nama_lengkap }}</p>
@@ -102,6 +102,28 @@
                                 <p class="text-gray-900">{{ $pendaftar->no_hp }}</p>
                             </div>
                         </div>
+                        @if(isset($pendaftar->fakultas))
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Fakultas</label>
+                                <p class="text-gray-900">{{ $pendaftar->fakultas ?? 'N/A' }}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Jurusan</label>
+                                <p class="text-gray-900">{{ $pendaftar->jurusan ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">Semester</label>
+                                <p class="text-gray-900">{{ isset($pendaftar->semester) ? 'Semester ' . $pendaftar->semester : 'N/A' }}</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600 mb-1">IPK</label>
+                                <p class="text-gray-900">{{ $pendaftar->ipk ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -128,59 +150,49 @@
                         <i class="fas fa-comment-alt text-yellow-500 mr-2"></i>Alasan Mendaftar
                     </h6>
                     <div class="bg-gradient-to-r from-gray-50 to-white border border-gray-200 rounded-lg p-6 shadow-sm">
-                        <div class="text-gray-800 italic">
+                        <div class="text-gray-800 italic whitespace-pre-line">
                             {{ $pendaftar->alasan_mendaftar }}
                         </div>
                     </div>
                 </div>
 
-                <!-- Documents Section -->
+                <!-- Dynamic Documents Section -->
+                @if($pendaftar->beasiswa->required_documents && count($pendaftar->beasiswa->required_documents) > 0)
                 <div class="mb-6 pl-4 border-l-4 border-teal-500">
                     <h6 class="text-base font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-200">
                         <i class="fas fa-folder-open text-blue-400 mr-2"></i>Dokumen Pendukung
                     </h6>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-{{ count($pendaftar->beasiswa->required_documents) >= 3 ? '3' : (count($pendaftar->beasiswa->required_documents) == 2 ? '2' : '1') }} gap-4">
+                        @foreach($pendaftar->beasiswa->required_documents as $document)
                         <div class="bg-white border border-gray-200 rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
-                            <div class="text-red-500 text-4xl mb-4">
-                                <i class="fas fa-file-pdf"></i>
+                            <div class="text-{{ $document['color'] }}-500 text-4xl mb-4">
+                                <i class="{{ $document['icon'] }}"></i>
                             </div>
                             <div>
-                                <h6 class="font-semibold text-gray-800 mb-3">Transkrip Nilai</h6>
-                                <a href="{{ asset('storage/documents/' . $pendaftar->file_transkrip) }}"
-                                   target="_blank"
-                                   class="inline-block border border-blue-500 text-blue-500 px-4 py-1.5 rounded-md text-sm hover:bg-blue-500 hover:text-white transition-colors duration-300">
-                                    <i class="fas fa-eye mr-1"></i>Lihat
-                                </a>
+                                <h6 class="font-semibold text-gray-800 mb-3">{{ $document['name'] }}</h6>
+                                @php
+                                    $uploadedFile = $pendaftar->getDocument($document['key']);
+                                @endphp
+                                @if($uploadedFile)
+                                    <a href="{{ asset('storage/documents/' . $uploadedFile) }}"
+                                       target="_blank"
+                                       class="inline-block border border-blue-500 text-blue-500 px-4 py-1.5 rounded-md text-sm hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                        <i class="fas fa-eye mr-1"></i>Lihat
+                                    </a>
+                                    <div class="text-xs text-gray-500 mt-2">
+                                        {{ $uploadedFile }}
+                                    </div>
+                                @else
+                                    <div class="text-sm text-red-500 font-medium">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i>Tidak Diupload
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                        <div class="bg-white border border-gray-200 rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
-                            <div class="text-blue-500 text-4xl mb-4">
-                                <i class="fas fa-id-card"></i>
-                            </div>
-                            <div>
-                                <h6 class="font-semibold text-gray-800 mb-3">KTP</h6>
-                                <a href="{{ asset('storage/documents/' . $pendaftar->file_ktp) }}"
-                                   target="_blank"
-                                   class="inline-block border border-blue-500 text-blue-500 px-4 py-1.5 rounded-md text-sm hover:bg-blue-500 hover:text-white transition-colors duration-300">
-                                    <i class="fas fa-eye mr-1"></i>Lihat
-                                </a>
-                            </div>
-                        </div>
-                        <div class="bg-white border border-gray-200 rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
-                            <div class="text-green-500 text-4xl mb-4">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div>
-                                <h6 class="font-semibold text-gray-800 mb-3">Kartu Keluarga</h6>
-                                <a href="{{ asset('storage/documents/' . $pendaftar->file_kk) }}"
-                                   target="_blank"
-                                   class="inline-block border border-blue-500 text-blue-500 px-4 py-1.5 rounded-md text-sm hover:bg-blue-500 hover:text-white transition-colors duration-300">
-                                    <i class="fas fa-eye mr-1"></i>Lihat
-                                </a>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -316,6 +328,67 @@
         </div>
         @endif
 
+        <!-- Document Summary Card -->
+        @if($pendaftar->beasiswa->required_documents && count($pendaftar->beasiswa->required_documents) > 0)
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="bg-white px-6 py-4 border-b border-gray-200">
+                <h6 class="font-semibold text-gray-900">
+                    <i class="fas fa-file-check text-green-500 mr-2"></i>Ringkasan Dokumen
+                </h6>
+            </div>
+            <div class="p-6">
+                @php
+                    $totalRequired = collect($pendaftar->beasiswa->required_documents)->where('required', true)->count();
+                    $uploadedRequired = 0;
+                    foreach($pendaftar->beasiswa->required_documents as $doc) {
+                        if($doc['required'] && $pendaftar->getDocument($doc['key'])) {
+                            $uploadedRequired++;
+                        }
+                    }
+                    $completionPercentage = $totalRequired > 0 ? round(($uploadedRequired / $totalRequired) * 100) : 100;
+                @endphp
+
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>Kelengkapan Dokumen</span>
+                        <span>{{ $uploadedRequired }}/{{ $totalRequired }} dokumen</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-gradient-to-r from-green-500 to-teal-600 h-2 rounded-full transition-all duration-300"
+                             style="width: {{ $completionPercentage }}%"></div>
+                    </div>
+                    <div class="text-center mt-2">
+                        <span class="text-lg font-bold text-{{ $completionPercentage >= 100 ? 'green' : ($completionPercentage >= 50 ? 'yellow' : 'red') }}-600">
+                            {{ $completionPercentage }}%
+                        </span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    @foreach($pendaftar->beasiswa->required_documents as $document)
+                    @php
+                        $isUploaded = $pendaftar->getDocument($document['key']);
+                    @endphp
+                    <div class="flex items-center justify-between p-2 rounded-lg {{ $isUploaded ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200' }}">
+                        <div class="flex items-center">
+                            <i class="{{ $document['icon'] }} text-{{ $document['color'] }}-500 mr-2"></i>
+                            <span class="text-sm font-medium">{{ $document['name'] }}</span>
+                            @if($document['required'])
+                                <span class="text-red-500 ml-1">*</span>
+                            @endif
+                        </div>
+                        @if($isUploaded)
+                            <i class="fas fa-check-circle text-green-500"></i>
+                        @else
+                            <i class="fas fa-times-circle text-red-500"></i>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Statistics Card -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
             <div class="bg-white px-6 py-4 border-b border-gray-200">
@@ -392,7 +465,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listeners
     statusSelect.addEventListener('change', toggleRejectionFields);
-    rejectionReason.addEventListener('input', updateCharCount);
+    if (rejectionReason) {
+        rejectionReason.addEventListener('input', updateCharCount);
+    }
 
     // Form validation
     statusForm.addEventListener('submit', function(e) {
@@ -434,17 +509,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize
     toggleRejectionFields();
-    updateCharCount();
+    if (rejectionReason) {
+        updateCharCount();
+    }
 
     // Print functionality
     window.printData = function() {
         window.print();
-    }
-
-    // Auto-resize reason text if too long
-    const reasonText = document.querySelector('.text-gray-800.italic');
-    if (reasonText && reasonText.scrollHeight > 150) {
-        reasonText.classList.add('max-h-[150px]', 'overflow-y-auto', 'border', 'border-gray-200', 'rounded', 'p-2');
     }
 });
 </script>

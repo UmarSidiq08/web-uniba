@@ -102,7 +102,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Period Status -->
                     <div class="period-status mt-3">
                         @php
@@ -111,7 +111,7 @@
                             $closeDate = \Carbon\Carbon::parse($beasiswa->tanggal_tutup);
                             $totalDays = $openDate->diffInDays($closeDate);
                         @endphp
-                        
+
                         @if ($today < $openDate)
                             <div class="alert alert-info-soft">
                                 <i class="fas fa-clock me-2"></i>
@@ -121,7 +121,7 @@
                         @elseif ($today >= $openDate && $today <= $closeDate)
                             <div class="alert alert-success-soft">
                                 <i class="fas fa-calendar-check me-2"></i>
-                                Pendaftaran <strong>sedang berlangsung</strong> - 
+                                Pendaftaran <strong>sedang berlangsung</strong> -
                                 Tersisa <strong>{{ $today->diffInDays($closeDate) }} hari</strong>
                             </div>
                         @else
@@ -144,6 +144,66 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Required Documents Section -->
+                @if($beasiswa->required_documents && count($beasiswa->required_documents) > 0)
+                <div class="detail-section mb-4">
+                    <h6 class="section-title mb-3">
+                        <i class="fas fa-folder-open text-blue-500 me-2"></i>Dokumen yang Diperlukan
+                    </h6>
+                    <div class="row">
+                        @foreach($beasiswa->required_documents as $document)
+                        <div class="col-md-{{ count($beasiswa->required_documents) >= 3 ? '4' : (count($beasiswa->required_documents) == 2 ? '6' : '12') }} mb-4">
+                            <div class="document-card h-100">
+                                <div class="document-icon text-{{ $document['color'] ?? 'primary' }}">
+                                    <i class="{{ $document['icon'] ?? 'fas fa-file' }}"></i>
+                                </div>
+                                <div class="document-content">
+                                    <h6 class="document-name">{{ $document['name'] }}</h6>
+                                    @if(!empty($document['description']))
+                                    <p class="document-description">{{ $document['description'] }}</p>
+                                    @endif
+                                    <div class="document-details">
+                                        <small class="text-muted d-block mb-1">
+                                            <i class="fas fa-file-alt me-1"></i>
+                                            Format: <span class="fw-bold">{{ strtoupper(implode(', ', $document['formats'])) }}</span>
+                                        </small>
+                                        <small class="text-muted d-block mb-2">
+                                            <i class="fas fa-weight-hanging me-1"></i>
+                                            Maks: <span class="fw-bold">{{ $document['max_size'] }}MB</span>
+                                        </small>
+                                        @if($document['required'])
+                                        <span class="badge bg-danger-soft text-danger px-2 py-1">
+                                            <i class="fas fa-asterisk me-1"></i>Wajib
+                                        </span>
+                                        @else
+                                        <span class="badge bg-secondary-soft text-secondary px-2 py-1">
+                                            <i class="fas fa-info-circle me-1"></i>Opsional
+                                        </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Documents Summary -->
+                    <div class="documents-summary mt-3">
+                        @php
+                            $totalDocs = count($beasiswa->required_documents);
+                            $requiredDocs = collect($beasiswa->required_documents)->where('required', true)->count();
+                            $optionalDocs = $totalDocs - $requiredDocs;
+                        @endphp
+                        <div class="alert alert-info-soft">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Ringkasan Dokumen:</strong>
+                            Total {{ $totalDocs }} dokumen
+                            ({{ $requiredDocs }} wajib, {{ $optionalDocs }} opsional)
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 <!-- Statistics Section (if data available) -->
                 @if(isset($statistik))
@@ -181,7 +241,7 @@
                 @endif
             </div>
         </div>
-        
+
         <!-- Action Buttons Card -->
         <div class="card shadow-sm mt-4">
             <div class="card-body">
@@ -191,11 +251,11 @@
                         <small>Detail beasiswa dapat diubah melalui menu edit</small>
                     </div>
                     <div class="d-flex gap-2">
-                        <a href="{{ route('admin.beasiswa.index') }}" 
+                        <a href="{{ route('admin.beasiswa.index') }}"
                            class="btn btn-outline-secondary">
                             <i class="fas fa-arrow-left me-2"></i>Kembali
                         </a>
-                        <a href="{{ route('admin.beasiswa.edit', $beasiswa) }}" 
+                        <a href="{{ route('admin.beasiswa.edit', $beasiswa) }}"
                            class="btn btn-warning">
                             <i class="fas fa-edit me-2"></i>Edit Beasiswa
                         </a>
@@ -208,7 +268,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Info Cards -->
         <div class="row mt-4">
             <div class="col-md-6">
@@ -226,15 +286,19 @@
                                 <i class="fas fa-check text-success me-2"></i>
                                 <small>Pastikan informasi selalu up-to-date</small>
                             </li>
-                            <li>
+                            <li class="mb-2">
                                 <i class="fas fa-check text-success me-2"></i>
                                 <small>Berikan feedback cepat kepada pendaftar</small>
+                            </li>
+                            <li>
+                                <i class="fas fa-check text-success me-2"></i>
+                                <small>Periksa konfigurasi dokumen yang diperlukan</small>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-6">
                 <div class="card shadow-sm border-start border-warning border-4">
                     <div class="card-body">
@@ -250,9 +314,13 @@
                                 <i class="fas fa-info text-info me-2"></i>
                                 <small>Backup data sebelum melakukan perubahan besar</small>
                             </li>
-                            <li>
+                            <li class="mb-2">
                                 <i class="fas fa-info text-info me-2"></i>
                                 <small>Koordinasi dengan tim terkait perubahan jadwal</small>
+                            </li>
+                            <li>
+                                <i class="fas fa-info text-info me-2"></i>
+                                <small>Pastikan dokumen requirements sudah lengkap</small>
                             </li>
                         </ul>
                     </div>
@@ -351,6 +419,77 @@
     margin-bottom: 0;
 }
 
+/* Document cards */
+.document-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 280px;
+}
+
+.document-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border-color: var(--mint-primary, #00c9a7);
+}
+
+.document-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.document-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.document-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.document-details {
+    margin-top: auto;
+    width: 100%;
+}
+
+.document-details small {
+    text-align: left;
+}
+
+/* Color variations for document icons */
+.text-red { color: #dc3545 !important; }
+.text-blue { color: #0d6efd !important; }
+.text-green { color: #198754 !important; }
+.text-yellow { color: #ffc107 !important; }
+.text-purple { color: #6f42c1 !important; }
+.text-orange { color: #fd7e14 !important; }
+.text-teal { color: #20c997 !important; }
+.text-gray { color: #6c757d !important; }
+
+/* Badge colors for document types */
+.bg-danger-soft .text-danger { color: #842029 !important; }
+.bg-secondary-soft .text-secondary { color: #495057 !important; }
+
+/* Documents summary */
+.documents-summary {
+    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+}
+
 /* Statistics cards */
 .stat-card {
     background: white;
@@ -359,6 +498,12 @@
     padding: 1rem;
     text-align: center;
     margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .stat-number {
@@ -465,19 +610,27 @@
         padding-top: 1rem;
         margin-left: 0;
     }
-    
-    .info-card {
+
+    .info-card, .document-card {
         margin-bottom: 1rem;
     }
-    
+
+    .document-card {
+        min-height: auto;
+    }
+
     .d-flex.gap-2 {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .col-md-4, .col-md-6, .col-md-12 {
+        margin-bottom: 1rem;
     }
 }
 
@@ -489,60 +642,7 @@
     --mint-light: #4dd0e1;
     --mint-blue: #0891b2;
 }
-</style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Copy link functionality
-    window.copyLink = function() {
-        const url = window.location.href.replace('/admin/', '/');
-        navigator.clipboard.writeText(url).then(function() {
-            // Show success message
-            const btn = event.target.closest('.btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-check me-2"></i>Tersalin!';
-            btn.classList.remove('btn-info');
-            btn.classList.add('btn-success');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.classList.remove('btn-success');
-                btn.classList.add('btn-info');
-            }, 2000);
-        }).catch(function() {
-            alert('Gagal menyalin link. Silakan copy manual: ' + url);
-        });
-    }
-    
-    // Smooth scroll for long content
-    document.querySelectorAll('.content-box').forEach(box => {
-        if (box.scrollHeight > 300) {
-            box.style.maxHeight = '300px';
-            box.style.overflowY = 'auto';
-            box.classList.add('scrollable-content');
-        }
-    });
-    
-    // Auto-refresh status if needed
-    setInterval(function() {
-        const periodStatus = document.querySelector('.period-status');
-        if (periodStatus) {
-            // This could be enhanced to auto-update the status
-            // without full page reload if needed
-        }
-    }, 60000); // Check every minute
-    
-    // Tooltip initialization
-    if (typeof bootstrap !== 'undefined') {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-    }
-});
-</script>
-
-<style>
 /* Additional scrollable content styling */
 .scrollable-content {
     border: 2px solid #e9ecef;
@@ -566,4 +666,82 @@ document.addEventListener('DOMContentLoaded', function() {
     background: var(--mint-dark, #00a693);
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Copy link functionality
+    window.copyLink = function() {
+        const url = window.location.href.replace('/admin/', '/');
+        navigator.clipboard.writeText(url).then(function() {
+            // Show success message
+            const btn = event.target.closest('.btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check me-2"></i>Tersalin!';
+            btn.classList.remove('btn-info');
+            btn.classList.add('btn-success');
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-info');
+            }, 2000);
+        }).catch(function() {
+            alert('Gagal menyalin link. Silakan copy manual: ' + url);
+        });
+    }
+
+    // Smooth scroll for long content
+    document.querySelectorAll('.content-box').forEach(box => {
+        if (box.scrollHeight > 300) {
+            box.style.maxHeight = '300px';
+            box.style.overflowY = 'auto';
+            box.classList.add('scrollable-content');
+        }
+    });
+
+    // Auto-refresh status if needed
+    setInterval(function() {
+        const periodStatus = document.querySelector('.period-status');
+        if (periodStatus) {
+            // This could be enhanced to auto-update the status
+            // without full page reload if needed
+        }
+    }, 60000); // Check every minute
+
+    // Tooltip initialization
+    if (typeof bootstrap !== 'undefined') {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+
+    // Document card hover effects
+    document.querySelectorAll('.document-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.borderColor = 'var(--mint-primary, #00c9a7)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.borderColor = '#e9ecef';
+        });
+    });
+
+    // Add loading animation when copying link
+    document.querySelectorAll('.btn-info').forEach(btn => {
+        if (btn.textContent.includes('Bagikan Link')) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyalin...';
+                this.disabled = true;
+
+                setTimeout(() => {
+                    copyLink();
+                    this.disabled = false;
+                }, 500);
+            });
+        }
+    });
+});
+</script>
 @endsection

@@ -56,9 +56,7 @@
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-600 mb-2">Persyaratan</label>
-                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-gray-700 text-sm md:text-base">
-                                {{ $beasiswa->persyaratan }}
-                            </div>
+                            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-gray-700 text-sm md:text-base whitespace-pre-line">{{ $beasiswa->persyaratan }}</div>
                         </div>
                     </div>
                 </div>
@@ -112,7 +110,7 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                     <div>
                                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
                                             <i class="fas fa-envelope mr-1 text-gray-500"></i>Email *
@@ -121,7 +119,7 @@
                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('email') border-red-500 @enderror"
                                                id="email"
                                                name="email"
-                                               value="{{ old('email') }}"
+                                               value="{{ old('email', Auth::user()->email ?? '') }}"
                                                placeholder="contoh@email.com"
                                                required>
                                         @error('email')
@@ -141,6 +139,80 @@
                                                placeholder="08xxxxxxxxxx"
                                                required>
                                         @error('no_hp')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Academic Information -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label for="fakultas" class="block text-sm font-medium text-gray-700 mb-1">
+                                            <i class="fas fa-university mr-1 text-gray-500"></i>Fakultas *
+                                        </label>
+                                        <input type="text"
+                                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('fakultas') border-red-500 @enderror"
+                                               id="fakultas"
+                                               name="fakultas"
+                                               value="{{ old('fakultas') }}"
+                                               placeholder="Contoh: Teknik"
+                                               required>
+                                        @error('fakultas')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="jurusan" class="block text-sm font-medium text-gray-700 mb-1">
+                                            <i class="fas fa-graduation-cap mr-1 text-gray-500"></i>Jurusan *
+                                        </label>
+                                        <input type="text"
+                                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('jurusan') border-red-500 @enderror"
+                                               id="jurusan"
+                                               name="jurusan"
+                                               value="{{ old('jurusan') }}"
+                                               placeholder="Contoh: Teknik Informatika"
+                                               required>
+                                        @error('jurusan')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="semester" class="block text-sm font-medium text-gray-700 mb-1">
+                                            <i class="fas fa-calendar-check mr-1 text-gray-500"></i>Semester *
+                                        </label>
+                                        <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('semester') border-red-500 @enderror"
+                                                id="semester"
+                                                name="semester"
+                                                required>
+                                            <option value="">-- Pilih Semester --</option>
+                                            @for($i = 1; $i <= 14; $i++)
+                                                <option value="{{ $i }}" {{ old('semester') == $i ? 'selected' : '' }}>Semester {{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                        @error('semester')
+                                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="ipk" class="block text-sm font-medium text-gray-700 mb-1">
+                                            <i class="fas fa-chart-line mr-1 text-gray-500"></i>IPK *
+                                        </label>
+                                        <input type="number"
+                                               class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('ipk') border-red-500 @enderror"
+                                               id="ipk"
+                                               name="ipk"
+                                               value="{{ old('ipk') }}"
+                                               min="0"
+                                               max="4"
+                                               step="0.01"
+                                               placeholder="3.50"
+                                               required>
+                                        @error('ipk')
                                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -175,78 +247,47 @@
                             </div>
                         </div>
 
-                        <!-- Document Upload Section -->
+                        <!-- Dynamic Document Upload Section -->
+                        @if($beasiswa->required_documents && count($beasiswa->required_documents) > 0)
                         <div class="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-green-500">
                             <h6 class="text-md font-semibold text-gray-700 mb-4">
                                 <i class="fas fa-folder-upload text-green-500 mr-2"></i>Dokumen Pendukung
                             </h6>
                             <div class="bg-white rounded-lg p-6 shadow-sm">
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-{{ count($beasiswa->required_documents) >= 3 ? '3' : (count($beasiswa->required_documents) == 2 ? '2' : '1') }} gap-4">
+                                    @foreach($beasiswa->required_documents as $document)
                                     <div class="file-upload-card border-2 border-dashed border-gray-300 rounded-xl p-6 text-center transition-all duration-300 cursor-pointer hover:border-teal-500 hover:bg-teal-50">
-                                        <label for="file_transkrip" class="file-label cursor-pointer">
-                                            <div class="file-icon text-red-500 text-4xl mb-4">
-                                                <i class="fas fa-file-pdf"></i>
+                                        <label for="{{ $document['key'] }}" class="file-label cursor-pointer">
+                                            <div class="file-icon text-{{ $document['color'] }}-500 text-4xl mb-4">
+                                                <i class="{{ $document['icon'] }}"></i>
                                             </div>
                                             <div class="file-info">
-                                                <h6 class="file-title font-semibold text-gray-700 mb-1">Transkrip Nilai *</h6>
-                                                <small class="file-desc text-gray-500 text-sm">Format: PDF, Max: 5MB</small>
+                                                <h6 class="file-title font-semibold text-gray-700 mb-1">
+                                                    {{ $document['name'] }} {{ $document['required'] ? '*' : '' }}
+                                                </h6>
+                                                <small class="file-desc text-gray-500 text-sm">
+                                                    Format: {{ strtoupper(implode(', ', $document['formats'])) }}, Max: {{ $document['max_size'] }}MB
+                                                </small>
+                                                @if(!empty($document['description']))
+                                                <div class="text-xs text-gray-400 mt-1">{{ $document['description'] }}</div>
+                                                @endif
                                             </div>
                                         </label>
                                         <input type="file"
                                                class="hidden"
-                                               id="file_transkrip"
-                                               name="file_transkrip"
-                                               accept=".pdf"
-                                               required>
-                                        @error('file_transkrip')
+                                               id="{{ $document['key'] }}"
+                                               name="{{ $document['key'] }}"
+                                               accept="{{ collect($document['formats'])->map(fn($ext) => '.' . $ext)->implode(',') }}"
+                                               {{ $document['required'] ? 'required' : '' }}>
+                                        @error($document['key'])
                                             <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
                                         @enderror
                                     </div>
-
-                                    <div class="file-upload-card border-2 border-dashed border-gray-300 rounded-xl p-6 text-center transition-all duration-300 cursor-pointer hover:border-teal-500 hover:bg-teal-50">
-                                        <label for="file_ktp" class="file-label cursor-pointer">
-                                            <div class="file-icon text-blue-500 text-4xl mb-4">
-                                                <i class="fas fa-id-card"></i>
-                                            </div>
-                                            <div class="file-info">
-                                                <h6 class="file-title font-semibold text-gray-700 mb-1">KTP *</h6>
-                                                <small class="file-desc text-gray-500 text-sm">PDF/JPG/PNG, Max: 5MB</small>
-                                            </div>
-                                        </label>
-                                        <input type="file"
-                                               class="hidden"
-                                               id="file_ktp"
-                                               name="file_ktp"
-                                               accept=".pdf,.jpg,.jpeg,.png"
-                                               required>
-                                        @error('file_ktp')
-                                            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="file-upload-card border-2 border-dashed border-gray-300 rounded-xl p-6 text-center transition-all duration-300 cursor-pointer hover:border-teal-500 hover:bg-teal-50">
-                                        <label for="file_kk" class="file-label cursor-pointer">
-                                            <div class="file-icon text-green-500 text-4xl mb-4">
-                                                <i class="fas fa-users"></i>
-                                            </div>
-                                            <div class="file-info">
-                                                <h6 class="file-title font-semibold text-gray-700 mb-1">Kartu Keluarga *</h6>
-                                                <small class="file-desc text-gray-500 text-sm">PDF/JPG/PNG, Max: 5MB</small>
-                                            </div>
-                                        </label>
-                                        <input type="file"
-                                               class="hidden"
-                                               id="file_kk"
-                                               name="file_kk"
-                                               accept=".pdf,.jpg,.jpeg,.png"
-                                               required>
-                                        @error('file_kk')
-                                            <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
+                        @endif
 
                         <!-- Terms and Submit -->
                         <div class="bg-gray-50 rounded-xl p-6">
@@ -306,21 +347,26 @@
 
             <div class="bg-white border-2 border-yellow-400 rounded-xl p-6 shadow-md transition-all duration-300 hover:shadow-lg">
                 <h6 class="text-lg font-semibold text-yellow-600 mb-4">
-                    <i class="fas fa-exclamation-triangle mr-2"></i>Perhatian
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Persyaratan Dokumen
                 </h6>
                 <ul class="space-y-2">
+                    @if($beasiswa->required_documents && count($beasiswa->required_documents) > 0)
+                        @foreach($beasiswa->required_documents as $document)
+                        <li class="flex items-start">
+                            <i class="{{ $document['icon'] }} text-{{ $document['color'] }}-500 mt-1 mr-2"></i>
+                            <span class="text-gray-600 text-sm">
+                                <strong>{{ $document['name'] }}:</strong>
+                                {{ strtoupper(implode(', ', $document['formats'])) }}
+                                (Max {{ $document['max_size'] }}MB)
+                            </span>
+                        </li>
+                        @endforeach
+                    @else
                     <li class="flex items-start">
                         <i class="fas fa-info text-blue-500 mt-1 mr-2"></i>
-                        <span class="text-gray-600 text-sm">Ukuran maksimal file adalah 5MB per dokumen</span>
+                        <span class="text-gray-600 text-sm">Tidak ada dokumen khusus yang diperlukan</span>
                     </li>
-                    <li class="flex items-start">
-                        <i class="fas fa-info text-blue-500 mt-1 mr-2"></i>
-                        <span class="text-gray-600 text-sm">Proses seleksi membutuhkan waktu 1-2 minggu</span>
-                    </li>
-                    <li class="flex items-start">
-                        <i class="fas fa-info text-blue-500 mt-1 mr-2"></i>
-                        <span class="text-gray-600 text-sm">Anda akan dihubungi melalui email atau telepon</span>
-                    </li>
+                    @endif
                 </ul>
             </div>
         </div>
@@ -342,6 +388,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const originalTitle = fileTitle.textContent.replace(' ✓', '');
 
             if (this.files && this.files[0]) {
+                // File size validation
+                const file = this.files[0];
+                const maxSizeText = card.querySelector('.file-desc').textContent;
+                const maxSize = parseInt(maxSizeText.match(/Max: (\d+)MB/)?.[1] || '5') * 1024 * 1024; // Convert to bytes
+
+                if (file.size > maxSize) {
+                    alert(Ukuran file terlalu besar. Maksimal ${Math.round(maxSize / 1024 / 1024)}MB.);
+                    this.value = '';
+                    card.classList.remove('border-teal-500', 'bg-teal-50');
+                    fileTitle.textContent = originalTitle;
+                    return;
+                }
+
                 card.classList.add('border-teal-500', 'bg-teal-50');
                 fileTitle.textContent = originalTitle + ' ✓';
             } else {
@@ -389,6 +448,17 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = value;
     });
 
+    // IPK validation
+    const ipkInput = document.getElementById('ipk');
+    ipkInput.addEventListener('input', function() {
+        let value = parseFloat(this.value);
+        if (value > 4) {
+            this.value = 4;
+        } else if (value < 0) {
+            this.value = 0;
+        }
+    });
+
     // Character counter for textarea
     const textareaElement = document.getElementById('alasan_mendaftar');
     if (textareaElement) {
@@ -399,12 +469,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function updateCounter() {
             const remaining = maxLength - textareaElement.value.length;
-            counterElement.textContent = `${textareaElement.value.length}/${maxLength} karakter`;
+            counterElement.textContent = ${textareaElement.value.length}/${maxLength} karakter;
 
             if (remaining < 100) {
                 counterElement.className = 'text-right text-sm mt-2 text-yellow-600';
             } else if (remaining < 0) {
                 counterElement.className = 'text-right text-sm mt-2 text-red-600';
+                textareaElement.value = textareaElement.value.substring(0, maxLength);
             } else {
                 counterElement.className = 'text-right text-sm mt-2 text-gray-500';
             }
@@ -423,21 +494,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // File size validation
-    fileInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            const file = this.files[0];
-            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-            const card = this.closest('.file-upload-card');
-
-            if (file && file.size > maxSize) {
-                alert('Ukuran file terlalu besar. Maksimal 5MB.');
-                this.value = '';
-                card.classList.remove('border-teal-500', 'bg-teal-50');
-                return;
-            }
-        });
-    });
+    // Email readonly if user is logged in
+    const emailInput = document.getElementById('email');
+    if (emailInput.value && emailInput.value.includes('@')) {
+        emailInput.readOnly = true;
+        emailInput.classList.add('bg-gray-100');
+        emailInput.title = 'Email tidak dapat diubah karena sudah sesuai dengan akun Anda';
+    }
 });
 </script>
 @endsection

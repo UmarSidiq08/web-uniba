@@ -13,9 +13,9 @@ class HomeController extends Controller
     public function index()
     {
         $beasiswas = Beasiswa::where('status', 'aktif')
-                            ->where('tanggal_tutup', '>=', now())
-                            ->latest()
-                            ->get();
+            ->where('tanggal_tutup', '>=', now())
+            ->latest()
+            ->get();
 
         $userApplications = collect();
         $activeUserApplication = null;
@@ -24,12 +24,12 @@ class HomeController extends Controller
 
         if (Auth::check()) {
             $userApplications = Pendaftar::where('email', Auth::user()->email)
-                                       ->get()
-                                       ->keyBy('beasiswa_id');
+                ->get()
+                ->keyBy('beasiswa_id');
             $activeUserApplication = Pendaftar::where('email', Auth::user()->email)
-                                            ->whereIn('status', ['pending', 'diterima'])
-                                            ->orderBy('created_at', 'desc')
-                                            ->first();
+                ->whereIn('status', ['pending', 'diterima'])
+                ->orderBy('created_at', 'desc')
+                ->first();
             $userApplication = $activeUserApplication;
 
             if ($activeUserApplication) {
@@ -48,22 +48,22 @@ class HomeController extends Controller
     {
         if (!Auth::check()) {
             return redirect()->route('login')
-                           ->with('error', 'Silakan login untuk melihat status.');
+                ->with('error', 'Silakan login untuk melihat status.');
         }
 
         $userApplication = Pendaftar::where('email', Auth::user()->email)
-                                  ->with('beasiswa')
-                                  ->orderBy('created_at', 'desc')
-                                  ->first();
+            ->with('beasiswa')
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         if (!$userApplication) {
             return redirect()->route('home')
-                           ->with('error', 'Anda belum mendaftar beasiswa apapun.');
+                ->with('error', 'Anda belum mendaftar beasiswa apapun.');
         }
         $allApplications = Pendaftar::where('email', Auth::user()->email)
-                                  ->with('beasiswa')
-                                  ->orderBy('created_at', 'desc')
-                                  ->get();
+            ->with('beasiswa')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('status', compact('userApplication', 'allApplications'));
     }
@@ -77,7 +77,7 @@ class HomeController extends Controller
         $pendaftar->update($validated);
 
         return redirect()->back()
-                        ->with('success', 'Status pendaftar berhasil diupdate!');
+            ->with('success', 'Status pendaftar berhasil diupdate!');
     }
 
     public function editForResubmit(Pendaftar $pendaftar)
@@ -88,12 +88,12 @@ class HomeController extends Controller
 
         if (!$pendaftar->canResubmit()) {
             return redirect()->route('status')
-                           ->with('error', 'Beasiswa ini tidak dapat diajukan kembali.');
+                ->with('error', 'Beasiswa ini tidak dapat diajukan kembali.');
         }
 
         if (!$pendaftar->beasiswa->isActive()) {
             return redirect()->route('status')
-                           ->with('error', 'Beasiswa sudah tidak aktif.');
+                ->with('error', 'Beasiswa sudah tidak aktif.');
         }
         return view('pendaftaran.resubmit', compact('pendaftar'));
     }
@@ -103,76 +103,133 @@ class HomeController extends Controller
         if (!Auth::check() || $pendaftar->email !== Auth::user()->email) {
             abort(403, 'Unauthorized action.');
         }
+
         if (!$pendaftar->canResubmit()) {
             return redirect()->route('status')
-                           ->with('error', 'Beasiswa ini tidak dapat diajukan kembali.');
-        }
-        if (!$pendaftar->beasiswa->isActive()) {
-            return redirect()->route('status')
-                           ->with('error', 'Beasiswa sudah tidak aktif.');
+                ->with('error', 'Beasiswa ini tidak dapat diajukan kembali.');
         }
 
-        $validated = $request->validate([
+        if (!$pendaftar->beasiswa->isActive()) {
+            return redirect()->route('status')
+                ->with('error', 'Beasiswa sudah tidak aktif.');
+        }
+
+        // Base validation rules - same as before
+        $rules = [
             'nama_lengkap' => 'required|string|max:255',
-            'nim' => [
-                'required',
-                'string',
-                'max:20',
-            ],
+            'nim' => 'required|string|max:20',
             'email' => 'required|email|max:255',
             'no_hp' => 'required|string|max:15',
             'alasan_mendaftar' => 'required|string',
-            'file_transkrip' => 'nullable|file|mimes:pdf|max:5048',
-            'file_ktp' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5048',
-            'file_kk' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5048',
-        ]);
+        ];
+
+        // Add academic fields if they exist in the pendaftar
+        if (isset($pendaftar->fakultas)) {
+            $rules = array_merge($rules, [
+                'fakultas' => 'required|string|max:255',
+                'jurusan' => 'required|string|max:255',
+                'semester' => 'required|integer|min:1|max:14',
+                'ipk' => 'required|numeric|min:0|max:4',
+            ]);
+        }
+
+        // Dynamic document validation - differentiate between required and optional
+        $documentRules = [];
+        if ($pendaftar->beasiswa->required_documents && is_array($pendaftar->beasiswa->required_documents)) {
+            foreach ($pendaftar->beasiswa->required_documents as $document) {
+                $key = $document['key'];
+                $acceptedFormats = implode(',', $document['formats']);
+                $maxSize = $document['max_size'] * 1024; // Convert MB to KB
+
+                // Check if user already has this document uploaded
+                $hasExistingFile = $pendaftar->getDocument($key);
+
+                // For resubmit: if document is required but user already has it, make it optional
+                // If document is required and user doesn't have it, still make it required
+                if ($document['required'] && !$hasExistingFile) {
+                    $documentRules[$key] = "required|file|mimes:{$acceptedFormats}|max:{$maxSize}";
+                } else {
+                    // Optional if: 1) originally optional, or 2) required but user already has it
+                    $documentRules[$key] = "nullable|file|mimes:{$acceptedFormats}|max:{$maxSize}";
+                }
+            }
+        }
+
+        $rules = array_merge($rules, $documentRules);
+
+        // Custom error messages
+        $messages = [];
+        if ($pendaftar->beasiswa->required_documents && is_array($pendaftar->beasiswa->required_documents)) {
+            foreach ($pendaftar->beasiswa->required_documents as $document) {
+                $key = $document['key'];
+                $formatText = strtoupper(implode(', ', $document['formats']));
+
+                $messages["{$key}.required"] = "File {$document['name']} wajib diupload karena belum ada file sebelumnya";
+                $messages["{$key}.mimes"] = "File {$document['name']} harus berformat {$formatText}";
+                $messages["{$key}.max"] = "File {$document['name']} maksimal {$document['max_size']}MB";
+                $messages["{$key}.file"] = "File {$document['name']} harus berupa file yang valid";
+            }
+        }
+
+        $validated = $request->validate($rules, $messages);
 
         if ($validated['email'] !== Auth::user()->email) {
             return redirect()->back()
-                           ->withInput()
-                           ->with('error', 'Email harus sama dengan email akun Anda.');
+                ->withInput()
+                ->with('error', 'Email harus sama dengan email akun Anda.');
         }
-        $fileUpdates = [];
 
-        if ($request->hasFile('file_transkrip')) {
-            // Hapus file lama
-            if ($pendaftar->file_transkrip) {
-                Storage::delete('public/documents/' . $pendaftar->file_transkrip);
+        // Handle dynamic document uploads - preserve existing files
+        $uploadedDocuments = $pendaftar->uploaded_documents ?? [];
+
+        if ($pendaftar->beasiswa->required_documents && is_array($pendaftar->beasiswa->required_documents)) {
+            foreach ($pendaftar->beasiswa->required_documents as $document) {
+                $key = $document['key'];
+
+                if ($request->hasFile($key)) {
+                    // Delete old file if exists
+                    $oldFile = $pendaftar->getDocument($key);
+                    if ($oldFile && Storage::exists('public/documents/' . $oldFile)) {
+                        Storage::delete('public/documents/' . $oldFile);
+                    }
+
+                    // Upload new file
+                    $file = $request->file($key);
+                    $fileName = time() . '_' . $key . '_' . $file->getClientOriginalName();
+                    $file->storeAs('public/documents', $fileName);
+                    $uploadedDocuments[$key] = $fileName;
+                }
+                // If no new file uploaded, keep the existing file (don't modify $uploadedDocuments[$key])
             }
-            $transkripName = time() . '_transkrip_' . $request->file('file_transkrip')->getClientOriginalName();
-            $request->file('file_transkrip')->storeAs('public/documents', $transkripName);
-            $fileUpdates['file_transkrip'] = $transkripName;
         }
 
-        if ($request->hasFile('file_ktp')) {
-            if ($pendaftar->file_ktp) {
-                Storage::delete('public/documents/' . $pendaftar->file_ktp);
-            }
-            $ktpName = time() . '_ktp_' . $request->file('file_ktp')->getClientOriginalName();
-            $request->file('file_ktp')->storeAs('public/documents', $ktpName);
-            $fileUpdates['file_ktp'] = $ktpName;
-        }
-
-        if ($request->hasFile('file_kk')) {
-            if ($pendaftar->file_kk) {
-                Storage::delete('public/documents/' . $pendaftar->file_kk);
-            }
-            $kkName = time() . '_kk_' . $request->file('file_kk')->getClientOriginalName();
-            $request->file('file_kk')->storeAs('public/documents', $kkName);
-            $fileUpdates['file_kk'] = $kkName;
-        }
-
-        // Update pendaftar - reset status dan clear rejection data
-        $updateData = array_merge($validated, $fileUpdates, [
+        // Prepare update data
+        $updateData = [
+            'nama_lengkap' => $validated['nama_lengkap'],
+            'nim' => $validated['nim'],
+            'no_hp' => $validated['no_hp'],
+            'alasan_mendaftar' => $validated['alasan_mendaftar'],
+            'uploaded_documents' => $uploadedDocuments,
             'status' => 'pending',
             'rejection_reason' => null,
             'can_resubmit' => false,
             'rejected_at' => null,
-        ]);
+        ];
 
+        // Add academic fields if they exist
+        if (isset($pendaftar->fakultas)) {
+            $updateData = array_merge($updateData, [
+                'fakultas' => $validated['fakultas'],
+                'jurusan' => $validated['jurusan'],
+                'semester' => $validated['semester'],
+                'ipk' => $validated['ipk'],
+            ]);
+        }
+
+        // Update pendaftar
         $pendaftar->update($updateData);
 
         return redirect()->route('status')
-                        ->with('success', 'Beasiswa berhasil diajukan kembali! Status Anda sekarang pending untuk review.');
+            ->with('success', 'Beasiswa berhasil diajukan kembali! Status Anda sekarang pending untuk review.');
     }
 }

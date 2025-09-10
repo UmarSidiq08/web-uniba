@@ -20,10 +20,11 @@ return new class extends Migration
             $table->integer('semester');
             $table->decimal('ipk', 3, 2);
             $table->text('alasan_mendaftar');
-            $table->string('file_transkrip')->nullable();
-            $table->string('file_ktp')->nullable();
-            $table->string('file_kk')->nullable();
+            $table->json('uploaded_documents')->nullable();
             $table->enum('status', ['pending', 'diterima', 'ditolak'])->default('pending');
+            $table->text('rejection_reason')->nullable();
+            $table->boolean('can_resubmit')->default(false);
+            $table->timestamp('rejected_at')->nullable();
             $table->timestamps();
         });
     }

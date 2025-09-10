@@ -88,15 +88,21 @@ class PendaftarController extends Controller
 
     public function destroy(Pendaftar $pendaftar)
     {
-        // Hapus file jika ada
-        if ($pendaftar->file_transkrip) {
-            Storage::delete('public/documents/' . $pendaftar->file_transkrip);
+        // Hapus semua file dokumen yang diupload
+        if ($pendaftar->uploaded_documents && is_array($pendaftar->uploaded_documents)) {
+            foreach ($pendaftar->uploaded_documents as $key => $filename) {
+                if ($filename) {
+                    Storage::delete('public/documents/' . $filename);
+                }
+            }
         }
-        if ($pendaftar->file_ktp) {
-            Storage::delete('public/documents/' . $pendaftar->file_ktp);
-        }
-        if ($pendaftar->file_kk) {
-            Storage::delete('public/documents/' . $pendaftar->file_kk);
+
+        // Hapus juga file legacy jika ada (untuk backward compatibility)
+        $legacyFiles = ['file_transkrip', 'file_ktp', 'file_kk'];
+        foreach ($legacyFiles as $field) {
+            if (isset($pendaftar->{$field}) && $pendaftar->{$field}) {
+                Storage::delete('public/documents/' . $pendaftar->{$field});
+            }
         }
 
         $pendaftar->delete();
@@ -124,6 +130,55 @@ class PendaftarController extends Controller
                     'rejected_at' => $history->rejected_at->format('d M Y H:i'),
                 ];
             })
+        ]);
+    }
+
+    /**
+     * Get document summary for a specific pendaftar (AJAX)
+     */
+    public function getDocumentSummary(Pendaftar $pendaftar)
+    {
+        $beasiswa = $pendaftar->beasiswa;
+        $requiredDocuments = $beasiswa->required_documents ?? [];
+
+        $summary = [
+            'total_documents' => count($requiredDocuments),
+            'required_documents' => 0,
+            'uploaded_documents' => 0,
+            'uploaded_required' => 0,
+            'documents' => []
+        ];
+
+        foreach ($requiredDocuments as $document) {
+            $isUploaded = !empty($pendaftar->getDocument($document['key']));
+
+            if ($document['required']) {
+                $summary['required_documents']++;
+                if ($isUploaded) {
+                    $summary['uploaded_required']++;
+                }
+            }
+
+            if ($isUploaded) {
+                $summary['uploaded_documents']++;
+            }
+
+            $summary['documents'][] = [
+                'key' => $document['key'],
+                'name' => $document['name'],
+                'required' => $document['required'],
+                'uploaded' => $isUploaded,
+                'filename' => $pendaftar->getDocument($document['key'])
+            ];
+        }
+
+        $summary['completion_percentage'] = $summary['required_documents'] > 0
+            ? round(($summary['uploaded_required'] / $summary['required_documents']) * 100)
+            : 100;
+
+        return response()->json([
+            'success' => true,
+            'summary' => $summary
         ]);
     }
 }
