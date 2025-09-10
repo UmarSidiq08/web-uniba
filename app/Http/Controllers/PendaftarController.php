@@ -46,8 +46,8 @@ class PendaftarController extends Controller
                            ->with('error', 'Pendaftaran beasiswa sudah ditutup atau tidak aktif.');
         }
 
-        // Updated validation rules untuk handle resubmit scenario
-        $validated = $request->validate([
+        // Base validation rules
+        $rules = [
             'nama_lengkap' => 'required|string|max:255',
             'nim' => [
                 'required',
@@ -60,14 +60,27 @@ class PendaftarController extends Controller
             ],
             'email' => 'required|email|max:255',
             'no_hp' => 'required|string|max:15',
+            'fakultas' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
+            'semester' => 'required|integer|min:1|max:14',
+            'ipk' => 'required|numeric|min:0|max:4',
             'alasan_mendaftar' => 'required|string',
-            'file_transkrip' => 'required|file|mimes:pdf|max:5048',
-            'file_ktp' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5048',
-            'file_kk' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5048',
-        ], [
-            // Custom error messages
+        ];
+
+        // Add dynamic document validation rules
+        $documentRules = $beasiswa->getDocumentValidationRules();
+        $rules = array_merge($rules, $documentRules);
+
+        // Custom error messages
+        $messages = [
             'nim.unique' => 'NIM ini sedang digunakan oleh pendaftar lain dalam beasiswa yang masih aktif.',
-        ]);
+        ];
+
+        // Add dynamic document validation messages
+        $documentMessages = $beasiswa->getDocumentValidationMessages();
+        $messages = array_merge($messages, $documentMessages);
+
+        $validated = $request->validate($rules, $messages);
 
         // Pastikan email sama dengan email user yang login
         if ($validated['email'] !== Auth::user()->email) {
@@ -86,22 +99,36 @@ class PendaftarController extends Controller
                            ->with('error', 'Anda masih memiliki beasiswa yang aktif.');
         }
 
-        // Upload files
-        $transkripName = time() . '_transkrip_' . $request->file('file_transkrip')->getClientOriginalName();
-        $ktpName = time() . '_ktp_' . $request->file('file_ktp')->getClientOriginalName();
-        $kkName = time() . '_kk_' . $request->file('file_kk')->getClientOriginalName();
+        // Upload and store documents
+        $uploadedDocuments = [];
+        foreach ($beasiswa->required_documents as $document) {
+            $key = $document['key'];
 
-        $request->file('file_transkrip')->storeAs('public/documents', $transkripName);
-        $request->file('file_ktp')->storeAs('public/documents', $ktpName);
-        $request->file('file_kk')->storeAs('public/documents', $kkName);
+            if ($request->hasFile($key)) {
+                $file = $request->file($key);
+                $fileName = time() . '_' . $key . '_' . $file->getClientOriginalName();
+                $file->storeAs('public/documents', $fileName);
+                $uploadedDocuments[$key] = $fileName;
+            }
+        }
 
-        $validated['beasiswa_id'] = $beasiswa->id;
-        $validated['file_transkrip'] = $transkripName;
-        $validated['file_ktp'] = $ktpName;
-        $validated['file_kk'] = $kkName;
-        $validated['status'] = 'pending'; // Set status default
+        // Create pendaftar record
+        $pendaftarData = [
+            'beasiswa_id' => $beasiswa->id,
+            'nama_lengkap' => $validated['nama_lengkap'],
+            'nim' => $validated['nim'],
+            'email' => $validated['email'],
+            'no_hp' => $validated['no_hp'],
+            'fakultas' => $validated['fakultas'],
+            'jurusan' => $validated['jurusan'],
+            'semester' => $validated['semester'],
+            'ipk' => $validated['ipk'],
+            'alasan_mendaftar' => $validated['alasan_mendaftar'],
+            'uploaded_documents' => $uploadedDocuments,
+            'status' => 'pending',
+        ];
 
-        Pendaftar::create($validated);
+        Pendaftar::create($pendaftarData);
 
         return redirect()->route('home')
                         ->with('success', 'Pendaftaran beasiswa berhasil!');
@@ -129,7 +156,7 @@ class PendaftarController extends Controller
             'rejected_applications_count' => $rejectedApplications->count(),
             'resubmittable_applications_count' => $resubmittableApplications->count(),
             'can_apply_new' => is_null($activeApplication),
-            'has_resubmittable' => $resubmittableApplications->isNotEmpty(), 
+            'has_resubmittable' => $resubmittableApplications->isNotEmpty(),
         ]);
     }
 }

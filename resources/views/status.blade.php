@@ -178,46 +178,43 @@
                 </div>
 
                 <!-- Documents Section -->
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-4">
-                        <i class="fas fa-folder-open text-purple-500 mr-2"></i>Dokumen yang Diupload
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-gradient-to-br from-red-50 to-pink-50 p-4 rounded-lg border border-red-200 text-center">
-                            <div class="text-red-500 text-3xl mb-3">
-                                <i class="fas fa-file-pdf"></i>
-                            </div>
-                            <h5 class="font-semibold text-gray-800 mb-2">Transkrip Nilai</h5>
-                            <a href="{{ asset('storage/documents/' . $userApplication->file_transkrip) }}"
-                               target="_blank"
-                               class="inline-flex items-center px-3 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition-colors duration-200">
-                                <i class="fas fa-eye mr-1"></i>Lihat File
-                            </a>
-                        </div>
-                        <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-lg border border-blue-200 text-center">
-                            <div class="text-blue-500 text-3xl mb-3">
-                                <i class="fas fa-id-card"></i>
-                            </div>
-                            <h5 class="font-semibold text-gray-800 mb-2">KTP</h5>
-                            <a href="{{ asset('storage/documents/' . $userApplication->file_ktp) }}"
-                               target="_blank"
-                               class="inline-flex items-center px-3 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition-colors duration-200">
-                                <i class="fas fa-eye mr-1"></i>Lihat File
-                            </a>
-                        </div>
-                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200 text-center">
-                            <div class="text-green-500 text-3xl mb-3">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h5 class="font-semibold text-gray-800 mb-2">Kartu Keluarga</h5>
-                            <a href="{{ asset('storage/documents/' . $userApplication->file_kk) }}"
-                               target="_blank"
-                               class="inline-flex items-center px-3 py-2 bg-green-500 text-white text-sm rounded-md hover:bg-green-600 transition-colors duration-200">
-                                <i class="fas fa-eye mr-1"></i>Lihat File
-                            </a>
-                        </div>
+                <!-- Documents Section - Dynamic Version -->
+@if($userApplication->beasiswa->required_documents && count($userApplication->beasiswa->required_documents) > 0)
+<div class="mb-6 pl-4 border-l-4 border-teal-500">
+    <h6 class="text-base font-semibold text-gray-700 mb-3 pb-2 border-b border-gray-200">
+        <i class="fas fa-folder-open text-blue-400 mr-2"></i>Dokumen Pendukung
+    </h6>
+    <div class="grid grid-cols-1 md:grid-cols-{{ count($userApplication->beasiswa->required_documents) >= 3 ? '3' : (count($userApplication->beasiswa->required_documents) == 2 ? '2' : '1') }} gap-4">
+        @foreach($userApplication->beasiswa->required_documents as $document)
+        <div class="bg-white border border-gray-200 rounded-lg p-6 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div class="text-{{ $document['color'] }}-500 text-4xl mb-4">
+                <i class="{{ $document['icon'] }}"></i>
+            </div>
+            <div>
+                <h6 class="font-semibold text-gray-800 mb-3">{{ $document['name'] }}</h6>
+                @php
+                    $uploadedFile = $userApplication->getDocument($document['key']);
+                @endphp
+                @if($uploadedFile)
+                    <a href="{{ asset('storage/documents/' . $uploadedFile) }}"
+                       target="_blank"
+                       class="inline-block border border-blue-500 text-blue-500 px-4 py-1.5 rounded-md text-sm hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                        <i class="fas fa-eye mr-1"></i>Lihat
+                    </a>
+                    <div class="text-xs text-gray-500 mt-2">
+                        {{ $uploadedFile }}
                     </div>
-                </div>
+                @else
+                    <div class="text-sm text-red-500 font-medium">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>Tidak Diupload
+                    </div>
+                @endif
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+@endif
 
                 <!-- Status Timeline -->
                 <div class="mb-6">
