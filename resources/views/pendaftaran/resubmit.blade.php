@@ -73,7 +73,7 @@
                                 <label class="block font-medium text-gray-700 mb-2" for="nim">
                                     NIM <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" id="nim" name="nim"
+                                <input type="number" id="nim" name="nim"
                                     value="{{ old('nim', $pendaftar->nim) }}"
                                     class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('nim') border-red-500 @enderror"
                                     required>
@@ -301,7 +301,7 @@
 
                                         <input type="file" id="{{ $document['key'] }}" name="{{ $document['key'] }}"
                                             accept="{{ $acceptedFormats }}" class="hidden">
-                
+
 
 
                                         <label for="{{ $document['key'] }}"

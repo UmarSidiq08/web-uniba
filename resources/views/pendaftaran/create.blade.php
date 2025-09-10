@@ -101,7 +101,7 @@
                                             <label for="nim" class="block text-sm font-medium text-gray-700 mb-1">
                                                 <i class="fas fa-id-badge mr-1 text-gray-500"></i>NIM *
                                             </label>
-                                            <input type="text"
+                                            <input type="number"
                                                 class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('nim') border-red-500 @enderror"
                                                 id="nim" name="nim" value="{{ old('nim') }}"
                                                 placeholder="Masukkan NIM" required>
