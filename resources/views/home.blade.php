@@ -579,7 +579,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.type = 'button';
                 button.setAttribute('data-bs-target', '#heroCarousel');
                 button.setAttribute('data-bs-slide-to', index);
-                button.setAttribute('aria-label', `Slide ${index + 1}`);
+                button.setAttribute('aria-label', Slide ${index + 1});
 
                 if (index === 0) {
                     button.className = 'active';
