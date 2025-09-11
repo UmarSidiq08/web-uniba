@@ -3,9 +3,30 @@
 @section('title', 'Register')
 
 @section('content')
-<div class="register-container">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'primary-orange': '#FF9500',
+                    'secondary-orange': '#FFA500',
+                    'primary-yellow': '#FFD700',
+                    'secondary-yellow': '#FFC107',
+                    'light-yellow': '#FFF59D',
+                    'pale-yellow': '#FFFDE7',
+                    'dark-orange': '#E67E00',
+                    'accent-orange': '#FF8C00',
+                }
+            }
+        }
+    }
+</script>
+
+<div class="register-container min-h-screen relative overflow-hidden">
     <!-- Background Elements -->
-    <div class="background-elements">
+    <div class="background-elements absolute inset-0 pointer-events-none overflow-hidden">
         <div class="floating-shape shape-1"></div>
         <div class="floating-shape shape-2"></div>
         <div class="floating-shape shape-3"></div>
@@ -13,33 +34,33 @@
         <div class="floating-shape shape-5"></div>
     </div>
 
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-6 col-lg-5">
+    <div class="container mx-auto px-4">
+        <div class="row justify-content-center align-items-center min-vh-100 flex items-center justify-center min-h-screen">
+            <div class="col-md-6 col-lg-5 w-full max-w-md">
                 <!-- Register Card -->
-                <div class="register-card">
+                <div class="register-card bg-white rounded-3xl shadow-2xl overflow-hidden relative backdrop-blur-lg border border-white/20">
                     <!-- Card Header -->
-                    <div class="register-header">
-                        <div class="register-icon">
+                    <div class="register-header p-10 pb-6 text-center relative">
+                        <div class="register-icon w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-primary-orange to-secondary-yellow rounded-full flex items-center justify-center text-3xl text-white shadow-lg">
                             <i class="fas fa-user-plus"></i>
                         </div>
-                        <h2 class="register-title">Buat Akun Baru</h2>
-                        <p class="register-subtitle">Bergabunglah dengan kami untuk mengakses layanan beasiswa</p>
+                        <h2 class="register-title text-3xl font-bold text-gray-800 mb-2">Buat Akun Baru</h2>
+                        <p class="register-subtitle text-gray-600 text-sm">Bergabunglah dengan kami untuk mengakses layanan beasiswa</p>
                     </div>
 
                     <!-- Card Body -->
-                    <div class="register-body">
+                    <div class="register-body px-10 pb-10">
                         <form method="POST" action="{{ route('register') }}" class="register-form">
                             @csrf
                             
                             <!-- Name Field -->
-                            <div class="form-group">
-                                <label for="name" class="form-label">
-                                    <i class="fas fa-user"></i> Nama Lengkap
+                            <div class="form-group mb-5">
+                                <label for="name" class="form-label block font-semibold text-sm text-gray-700 mb-2">
+                                    <i class="fas fa-user text-primary-orange mr-2"></i> Nama Lengkap
                                 </label>
-                                <div class="input-wrapper">
+                                <div class="input-wrapper relative">
                                     <input type="text" 
-                                           class="form-input @error('name') is-invalid @enderror" 
+                                           class="form-input w-full px-5 py-4 text-base text-gray-700 bg-gray-50 border-2 border-transparent rounded-xl transition-all duration-300 outline-none @error('name') is-invalid @enderror" 
                                            id="name" 
                                            name="name" 
                                            value="{{ old('name') }}" 
@@ -48,7 +69,7 @@
                                     <div class="input-focus-border"></div>
                                 </div>
                                 @error('name')
-                                    <div class="error-message">
+                                    <div class="error-message text-red-500 text-xs mt-2 p-2 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
                                         <i class="fas fa-exclamation-circle"></i>
                                         {{ $message }}
                                     </div>
@@ -56,13 +77,13 @@
                             </div>
 
                             <!-- Email Field -->
-                            <div class="form-group">
-                                <label for="email" class="form-label">
-                                    <i class="fas fa-envelope"></i> Email
+                            <div class="form-group mb-5">
+                                <label for="email" class="form-label block font-semibold text-sm text-gray-700 mb-2">
+                                    <i class="fas fa-envelope text-primary-orange mr-2"></i> Email
                                 </label>
-                                <div class="input-wrapper">
+                                <div class="input-wrapper relative">
                                     <input type="email" 
-                                           class="form-input @error('email') is-invalid @enderror" 
+                                           class="form-input w-full px-5 py-4 text-base text-gray-700 bg-gray-50 border-2 border-transparent rounded-xl transition-all duration-300 outline-none @error('email') is-invalid @enderror" 
                                            id="email" 
                                            name="email" 
                                            value="{{ old('email') }}" 
@@ -71,7 +92,7 @@
                                     <div class="input-focus-border"></div>
                                 </div>
                                 @error('email')
-                                    <div class="error-message">
+                                    <div class="error-message text-red-500 text-xs mt-2 p-2 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
                                         <i class="fas fa-exclamation-circle"></i>
                                         {{ $message }}
                                     </div>
@@ -79,24 +100,24 @@
                             </div>
 
                             <!-- Password Field -->
-                            <div class="form-group">
-                                <label for="password" class="form-label">
-                                    <i class="fas fa-lock"></i> Password
+                            <div class="form-group mb-5">
+                                <label for="password" class="form-label block font-semibold text-sm text-gray-700 mb-2">
+                                    <i class="fas fa-lock text-primary-orange mr-2"></i> Password
                                 </label>
-                                <div class="input-wrapper">
+                                <div class="input-wrapper relative">
                                     <input type="password" 
-                                           class="form-input @error('password') is-invalid @enderror" 
+                                           class="form-input w-full px-5 py-4 text-base text-gray-700 bg-gray-50 border-2 border-transparent rounded-xl transition-all duration-300 outline-none @error('password') is-invalid @enderror" 
                                            id="password" 
                                            name="password" 
                                            placeholder="Masukkan password Anda"
                                            required>
                                     <div class="input-focus-border"></div>
-                                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                    <button type="button" class="password-toggle absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent border-0 text-gray-500 cursor-pointer p-2 rounded-full transition-all duration-300 hover:text-primary-orange hover:bg-orange-50" onclick="togglePassword('password')">
                                         <i class="fas fa-eye" id="toggleIconPassword"></i>
                                     </button>
                                 </div>
                                 @error('password')
-                                    <div class="error-message">
+                                    <div class="error-message text-red-500 text-xs mt-2 p-2 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
                                         <i class="fas fa-exclamation-circle"></i>
                                         {{ $message }}
                                     </div>
@@ -104,38 +125,38 @@
                             </div>
 
                             <!-- Password Confirmation Field -->
-                            <div class="form-group">
-                                <label for="password_confirmation" class="form-label">
-                                    <i class="fas fa-lock"></i> Konfirmasi Password
+                            <div class="form-group mb-5">
+                                <label for="password_confirmation" class="form-label block font-semibold text-sm text-gray-700 mb-2">
+                                    <i class="fas fa-lock text-primary-orange mr-2"></i> Konfirmasi Password
                                 </label>
-                                <div class="input-wrapper">
+                                <div class="input-wrapper relative">
                                     <input type="password" 
-                                           class="form-input" 
+                                           class="form-input w-full px-5 py-4 text-base text-gray-700 bg-gray-50 border-2 border-transparent rounded-xl transition-all duration-300 outline-none" 
                                            id="password_confirmation" 
                                            name="password_confirmation" 
                                            placeholder="Masukkan ulang password Anda"
                                            required>
                                     <div class="input-focus-border"></div>
-                                    <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation')">
+                                    <button type="button" class="password-toggle absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent border-0 text-gray-500 cursor-pointer p-2 rounded-full transition-all duration-300 hover:text-primary-orange hover:bg-orange-50" onclick="togglePassword('password_confirmation')">
                                         <i class="fas fa-eye" id="toggleIconPasswordConfirmation"></i>
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Terms & Conditions -->
-                            <div class="form-group">
-                                <label class="checkbox-wrapper">
-                                    <input type="checkbox" name="terms" required>
-                                    <span class="checkbox-custom"></span>
-                                    <span class="checkbox-label">
-                                        Saya menyetujui <a href="#" class="terms-link">Syarat dan Ketentuan</a> yang berlaku
+                            <div class="form-group mb-5">
+                                <label class="checkbox-wrapper flex items-start cursor-pointer text-sm text-gray-600 leading-relaxed">
+                                    <input type="checkbox" name="terms" required class="hidden">
+                                    <span class="checkbox-custom w-5 h-5 border-2 border-gray-300 rounded mr-3 mt-0.5 relative transition-all duration-300 flex-shrink-0"></span>
+                                    <span class="checkbox-label select-none flex-1">
+                                        Saya menyetujui <a href="#" class="terms-link text-primary-orange no-underline font-medium hover:text-dark-orange hover:underline">Syarat dan Ketentuan</a> yang berlaku
                                     </span>
                                 </label>
                             </div>
 
                             <!-- Submit Button -->
-                            <button type="submit" class="btn-register">
-                                <span class="btn-content">
+                            <button type="submit" class="btn-register w-full py-4 px-8 bg-gradient-to-r from-primary-orange to-secondary-yellow text-white border-0 rounded-xl text-lg font-semibold cursor-pointer transition-all duration-300 relative overflow-hidden mb-6 shadow-lg hover:shadow-xl hover:transform hover:-translate-y-0.5">
+                                <span class="btn-content relative z-10 flex items-center justify-center gap-2">
                                     <i class="fas fa-user-plus"></i>
                                     Daftar Sekarang
                                 </span>
@@ -144,14 +165,14 @@
                         </form>
                         
                         <!-- Divider -->
-                        <div class="divider">
-                            <span class="divider-text">atau</span>
+                        <div class="divider text-center my-6 relative">
+                            <span class="divider-text bg-white px-4 text-gray-500 text-sm relative z-10">atau</span>
                         </div>
                         
                         <!-- Login Link -->
-                        <div class="login-link">
-                            <p>Sudah punya akun?</p>
-                            <a href="{{ route('login') }}" class="btn-login">
+                        <div class="login-link text-center">
+                            <p class="text-gray-600 mb-4 text-sm">Sudah punya akun?</p>
+                            <a href="{{ route('login') }}" class="btn-login inline-flex items-center gap-2 py-3 px-6 bg-transparent text-primary-orange border-2 border-primary-orange rounded-xl no-underline font-semibold text-base transition-all duration-300 hover:bg-primary-orange hover:text-white hover:transform hover:-translate-y-0.5 hover:shadow-lg">
                                 <i class="fas fa-sign-in-alt"></i>
                                 Login Sekarang
                             </a>
@@ -164,13 +185,16 @@
 
 <!-- Custom CSS -->
 <style>
-/* Color Variables */
+/* Color Variables - New Orange/Yellow Palette */
 :root {
-    --mint-primary: #00c9a7;
-    --mint-secondary: #00bcd4;
-    --mint-dark: #00a693;
-    --mint-light: #4dd0e1;
-    --mint-blue: #0891b2;
+    --primary-orange: #FF9500;
+    --secondary-orange: #FFA500;
+    --primary-yellow: #FFD700;
+    --secondary-yellow: #FFC107;
+    --light-yellow: #FFF59D;
+    --pale-yellow: #FFFDE7;
+    --dark-orange: #E67E00;
+    --accent-orange: #FF8C00;
     --success-color: #28a745;
     --warning-color: #ffc107;
     --danger-color: #dc3545;
@@ -185,7 +209,7 @@
 
 /* Global Styles */
 body {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    background: linear-gradient(135deg, #FFF59D 0%, #FFE082 50%, #FFCC80 100%);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     line-height: 1.6;
 }
@@ -210,14 +234,14 @@ body {
 .floating-shape {
     position: absolute;
     border-radius: 50%;
-    opacity: 0.1;
+    opacity: 0.15;
     animation: float 6s ease-in-out infinite;
 }
 
 .shape-1 {
     width: 200px;
     height: 200px;
-    background: linear-gradient(45deg, var(--mint-primary), var(--mint-blue));
+    background: linear-gradient(45deg, var(--primary-orange), var(--primary-yellow));
     top: 5%;
     left: -5%;
     animation-delay: 0s;
@@ -226,7 +250,7 @@ body {
 .shape-2 {
     width: 150px;
     height: 150px;
-    background: linear-gradient(45deg, var(--mint-secondary), var(--mint-light));
+    background: linear-gradient(45deg, var(--secondary-orange), var(--secondary-yellow));
     top: 70%;
     right: -3%;
     animation-delay: 2s;
@@ -235,7 +259,7 @@ body {
 .shape-3 {
     width: 120px;
     height: 120px;
-    background: linear-gradient(45deg, var(--mint-blue), var(--mint-primary));
+    background: linear-gradient(45deg, var(--accent-orange), var(--primary-yellow));
     top: 15%;
     right: 15%;
     animation-delay: 4s;
@@ -244,7 +268,7 @@ body {
 .shape-4 {
     width: 90px;
     height: 90px;
-    background: linear-gradient(45deg, var(--mint-light), var(--mint-secondary));
+    background: linear-gradient(45deg, var(--secondary-yellow), var(--light-yellow));
     bottom: 30%;
     left: 10%;
     animation-delay: 1s;
@@ -253,7 +277,7 @@ body {
 .shape-5 {
     width: 60px;
     height: 60px;
-    background: linear-gradient(45deg, var(--mint-primary), var(--mint-light));
+    background: linear-gradient(45deg, var(--primary-orange), var(--light-yellow));
     top: 40%;
     left: 5%;
     animation-delay: 3s;
@@ -273,13 +297,6 @@ body {
 
 /* Register Card */
 .register-card {
-    background: var(--white);
-    border-radius: 24px;
-    box-shadow: 0 20px 60px var(--shadow-medium);
-    overflow: hidden;
-    position: relative;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
     animation: slideInUp 0.8s ease;
 }
 
@@ -301,7 +318,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--mint-primary), var(--mint-blue), var(--mint-secondary));
+    background: linear-gradient(90deg, var(--primary-orange), var(--primary-yellow), var(--secondary-orange));
     background-size: 200% 100%;
     animation: shimmer 3s ease infinite;
 }
@@ -311,26 +328,10 @@ body {
     100% { background-position: 200% 0; }
 }
 
-/* Card Header */
-.register-header {
-    padding: 2.5rem 2.5rem 1.5rem;
-    text-align: center;
-    position: relative;
-}
-
+/* Register Icon Animation */
 .register-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1.5rem;
-    background: linear-gradient(135deg, var(--mint-primary), var(--mint-blue));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: var(--white);
-    box-shadow: 0 10px 30px rgba(0, 201, 167, 0.3);
     animation: pulse 2s ease infinite;
+    box-shadow: 0 10px 30px rgba(255, 149, 0, 0.3);
 }
 
 @keyframes pulse {
@@ -338,138 +339,34 @@ body {
     50% { transform: scale(1.05); }
 }
 
-.register-title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.register-subtitle {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    margin: 0;
-    line-height: 1.5;
-}
-
-/* Card Body */
-.register-body {
-    padding: 0 2.5rem 2.5rem;
-}
-
-/* Form Groups */
-.form-group {
-    margin-bottom: 1.25rem;
-}
-
-.form-label {
-    display: block;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.5px;
-}
-
-.form-label i {
-    color: var(--mint-primary);
-    margin-right: 0.5rem;
-}
-
-/* Input Wrapper */
-.input-wrapper {
-    position: relative;
-}
-
-.form-input {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    font-size: 1rem;
-    color: var(--text-primary);
-    background: var(--bg-light);
-    border: 2px solid transparent;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    outline: none;
-}
-
-.form-input:focus {
-    background: var(--white);
-    border-color: var(--mint-primary);
-    box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.1);
-    transform: translateY(-2px);
-}
-
-.form-input::placeholder {
-    color: #adb5bd;
-    font-size: 0.95rem;
-}
-
+/* Input Focus Border */
 .input-focus-border {
     position: absolute;
     bottom: 0;
     left: 50%;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--mint-primary), var(--mint-blue));
+    background: linear-gradient(90deg, var(--primary-orange), var(--primary-yellow));
     transition: all 0.3s ease;
     transform: translateX(-50%);
     border-radius: 2px;
+}
+
+.form-input:focus {
+    background: var(--white);
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 4px rgba(255, 149, 0, 0.1);
+    transform: translateY(-2px);
 }
 
 .form-input:focus + .input-focus-border {
     width: 100%;
 }
 
-/* Password Toggle */
-.password-toggle {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.password-toggle:hover {
-    color: var(--mint-primary);
-    background: rgba(0, 201, 167, 0.1);
-}
-
 /* Custom Checkbox */
-.checkbox-wrapper {
-    display: flex;
-    align-items: flex-start;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.4;
-}
-
-.checkbox-wrapper input[type="checkbox"] {
-    display: none;
-}
-
-.checkbox-custom {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #dee2e6;
-    border-radius: 4px;
-    margin-right: 0.75rem;
-    margin-top: 2px;
-    position: relative;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-}
-
 .checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom {
-    background: var(--mint-primary);
-    border-color: var(--mint-primary);
+    background: var(--primary-orange);
+    border-color: var(--primary-orange);
 }
 
 .checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom::after {
@@ -484,58 +381,19 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.checkbox-label {
-    user-select: none;
-    flex: 1;
-}
-
-.terms-link {
-    color: var(--mint-primary);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.terms-link:hover {
-    color: var(--mint-dark);
-    text-decoration: underline;
-}
-
-/* Register Button */
+/* Button Animations */
 .btn-register {
-    width: 100%;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, var(--mint-primary), var(--mint-blue));
-    color: var(--white);
-    border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0, 201, 167, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 149, 0, 0.4);
 }
 
 .btn-register:hover {
-    background: linear-gradient(135deg, var(--mint-dark), #0671a6);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 201, 167, 0.5);
+    background: linear-gradient(135deg, var(--dark-orange), var(--accent-orange));
+    box-shadow: 0 8px 25px rgba(255, 149, 0, 0.5);
 }
 
 .btn-register:active {
     transform: translateY(0);
-    box-shadow: 0 4px 15px rgba(0, 201, 167, 0.4);
-}
-
-.btn-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(255, 149, 0, 0.4);
 }
 
 .btn-shine {
@@ -553,12 +411,6 @@ body {
 }
 
 /* Divider */
-.divider {
-    text-align: center;
-    margin: 1.5rem 0;
-    position: relative;
-}
-
 .divider::before {
     content: '';
     position: absolute;
@@ -569,126 +421,15 @@ body {
     background: #dee2e6;
 }
 
-.divider-text {
-    background: var(--white);
-    padding: 0 1rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    position: relative;
-    z-index: 1;
-}
-
-/* Login Link */
-.login-link {
-    text-align: center;
-}
-
-.login-link p {
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-}
-
-.btn-login {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: transparent;
-    color: var(--mint-primary);
-    border: 2px solid var(--mint-primary);
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
+/* Login Button Hover */
 .btn-login:hover {
-    background: var(--mint-primary);
-    color: var(--white);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 201, 167, 0.3);
+    box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
 }
 
 /* Error Messages */
-.error-message {
-    color: var(--danger-color);
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    background: #fff5f5;
-    border: 1px solid #fed7d7;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
 .form-input.is-invalid {
     border-color: var(--danger-color);
     background: #fff5f5;
-}
-
-/* Register Footer */
-.register-footer {
-    text-align: center;
-    margin-top: 2rem;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    opacity: 0.8;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .register-header {
-        padding: 2rem 1.5rem 1rem;
-    }
-    
-    .register-body {
-        padding: 0 1.5rem 2rem;
-    }
-    
-    .register-title {
-        font-size: 1.625rem;
-    }
-    
-    .register-icon {
-        width: 70px;
-        height: 70px;
-        font-size: 1.75rem;
-    }
-    
-    .floating-shape {
-        opacity: 0.05;
-    }
-}
-
-@media (max-width: 576px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    .register-card {
-        border-radius: 16px;
-    }
-    
-    .register-header {
-        padding: 1.5rem 1rem 1rem;
-    }
-    
-    .register-body {
-        padding: 0 1rem 1.5rem;
-    }
-    
-    .btn-register {
-        padding: 0.875rem 1.5rem;
-        font-size: 1rem;
-    }
-    
-    .form-group {
-        margin-bottom: 1rem;
-    }
 }
 
 /* Loading State */
@@ -718,7 +459,14 @@ body {
 .btn-login:focus,
 .terms-link:focus {
     outline: none;
-    box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.2);
+    box-shadow: 0 0 0 4px rgba(255, 149, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .floating-shape {
+        opacity: 0.05;
+    }
 }
 </style>
 

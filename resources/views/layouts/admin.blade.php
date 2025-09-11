@@ -10,19 +10,30 @@
     <script src="https://cdn.tailwindcss.com"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <style>
-        :root {
-            --mint-primary: #00c9a7;
-            --mint-secondary: #00bcd4;
-            --mint-dark: #00a693;
-            --mint-light: #4dd0e1;
-            --mint-blue: #0891b2;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'orange-primary': '#FF8A00',
+                        'orange-secondary': '#FFB347',
+                        'orange-dark': '#E67700',
+                        'yellow-warm': '#FFD700',
+                        'yellow-light': '#FFF3A0',
+                        'cream-base': '#FFF8DC',
+                        'cream-light': '#FFFACD',
+                        'amber-warm': '#FFBF00',
+                    }
+                }
+            }
         }
+    </script>
 
+    <style>
         .navbar {
             transition: all 0.3s ease-in-out;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            background: linear-gradient(135deg, var(--mint-primary), var(--mint-secondary), var(--mint-blue)) !important;
+            background: linear-gradient(135deg, #FF8A00, #FFD700, #FFBF00) !important;
         }
 
         .navbar.sticky {
@@ -31,7 +42,7 @@
             left: 0;
             right: 0;
             z-index: 1030;
-            background: rgba(0, 201, 167, 0.95) !important;
+            background: rgba(255, 138, 0, 0.95) !important;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -70,7 +81,7 @@
             height: 2px;
             bottom: 0;
             left: 50%;
-            background: linear-gradient(90deg, #fff, var(--mint-light));
+            background: linear-gradient(90deg, #fff, #FFF3A0);
             transition: all 0.3s ease;
             transform: translateX(-50%);
             box-shadow: 0 0 8px rgba(255,255,255,0.8);
@@ -90,21 +101,23 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             border-radius: 8px;
             margin-top: 8px;
+            background: linear-gradient(135deg, #FFF8DC, #FFFACD);
         }
 
         .dropdown-item {
             transition: all 0.2s ease;
             padding: 0.7rem 1.5rem;
+            color: #495057;
         }
 
         .dropdown-item:hover {
-            background: linear-gradient(45deg, var(--mint-primary), var(--mint-blue));
+            background: linear-gradient(45deg, #FF8A00, #FFBF00);
             color: white;
             transform: translateX(5px);
         }
 
         .sidebar {
-            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%) !important;
+            background: linear-gradient(180deg, #FFF8DC 0%, #FFFACD 100%) !important;
             box-shadow: 2px 0 4px rgba(0,0,0,0.1);
             min-height: calc(100vh - 56px);
             padding-top: 1rem;
@@ -121,16 +134,16 @@
         }
 
         .sidebar .nav-link:hover {
-            background: linear-gradient(45deg, var(--mint-primary), var(--mint-secondary));
+            background: linear-gradient(45deg, #FF8A00, #FFD700);
             color: white;
             transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0, 201, 167, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 138, 0, 0.3);
         }
 
         .sidebar .nav-link.active {
-            background: linear-gradient(45deg, var(--mint-primary), var(--mint-blue));
+            background: linear-gradient(45deg, #FF8A00, #FFBF00);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 201, 167, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 138, 0, 0.4);
         }
 
         .sidebar .nav-link.active::before {
@@ -151,7 +164,7 @@
         }
 
         main {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #FFFACD, #FFF8DC);
             min-height: calc(100vh - 56px);
             padding: 1.5rem;
         }
@@ -164,7 +177,7 @@
         }
 
         .alert-success {
-            background: linear-gradient(45deg, var(--mint-dark), var(--mint-secondary));
+            background: linear-gradient(45deg, #28a745, #20c997);
             color: white;
         }
 
@@ -174,15 +187,17 @@
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, var(--mint-primary), var(--mint-blue));
+            background: linear-gradient(45deg, #FF8A00, #FFBF00);
             border: none;
             transition: all 0.3s ease;
+            color: white;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(45deg, var(--mint-dark), var(--mint-secondary));
+            background: linear-gradient(45deg, #E67700, #FFD700);
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 201, 167, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 138, 0, 0.4);
+            color: white;
         }
 
         .sidebar-overlay {
@@ -234,6 +249,7 @@
         .card {
             border: none;
             border-radius: 10px;
+            background: white;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
@@ -244,8 +260,8 @@
         }
 
         .card-header {
-            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-            border-bottom: 1px solid rgba(0, 201, 167, 0.1);
+            background: linear-gradient(45deg, #FFF8DC, #FFFACD);
+            border-bottom: 1px solid rgba(255, 138, 0, 0.1);
         }
 
         ::-webkit-scrollbar {
@@ -257,21 +273,21 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--mint-primary), var(--mint-blue));
+            background: linear-gradient(180deg, #FF8A00, #FFBF00);
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, var(--mint-dark), var(--mint-secondary));
+            background: linear-gradient(180deg, #E67700, #FFD700);
         }
     </style>
 </head>
-<body>
+<body class="bg-gradient-to-br from-cream-light to-cream-base">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark" id="mainNavbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-                <i class="fas fa-user-shield"></i> Admin Panel
+            <a class="navbar-brand text-white font-bold hover:scale-105 transition-transform duration-200" href="{{ route('admin.dashboard') }}">
+                <i class="fas fa-user-shield mr-2"></i> Admin Panel
             </a>
 
             <!-- Mobile toggle button -->
@@ -281,19 +297,19 @@
 
             <div class="navbar-nav ms-auto">
                 <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle"></i> {{ auth()->user()->name }}
+                    <a class="nav-link dropdown-toggle text-white font-medium hover:text-yellow-100 transition-colors duration-300" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle mr-1"></i> {{ auth()->user()->name }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{{ route('home') }}">
-                            <i class="fas fa-home"></i> Lihat Website
+                        <li><a class="dropdown-item hover:bg-orange-primary hover:text-white transition-all duration-200" href="{{ route('home') }}">
+                            <i class="fas fa-home mr-2"></i> Lihat Website
                         </a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li><hr class="dropdown-divider border-orange-200"></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
-                                <button type="submit" class="dropdown-item">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                <button type="submit" class="dropdown-item hover:bg-orange-primary hover:text-white transition-all duration-200 w-full text-left">
+                                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
                                 </button>
                             </form>
                         </li>
@@ -309,21 +325,21 @@
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }} text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-orange-primary hover:to-yellow-warm transition-all duration-300"
                                href="{{ route('admin.dashboard') }}">
-                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                                <i class="fas fa-tachometer-alt text-orange-primary"></i> Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.beasiswa.*') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.beasiswa.*') ? 'active' : '' }} text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-orange-primary hover:to-yellow-warm transition-all duration-300"
                                href="{{ route('admin.beasiswa.index') }}">
-                                <i class="fas fa-graduation-cap"></i> Kelola Beasiswa
+                                <i class="fas fa-graduation-cap text-orange-primary"></i> Kelola Beasiswa
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.pendaftar.*') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.pendaftar.*') ? 'active' : '' }} text-gray-700 hover:text-white hover:bg-gradient-to-r hover:from-orange-primary hover:to-yellow-warm transition-all duration-300"
                                href="{{ route('admin.pendaftar.index') }}">
-                                <i class="fas fa-users"></i> Kelola Pendaftar
+                                <i class="fas fa-users text-orange-primary"></i> Kelola Pendaftar
                             </a>
                         </li>
                     </ul>
@@ -333,16 +349,26 @@
             <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10">
                 @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl shadow-lg mb-6 p-4 flex items-center justify-between" role="alert">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle mr-3"></i>
+                            <span>{{ session('success') }}</span>
+                        </div>
+                        <button type="button" class="text-white hover:text-green-100 transition-colors" data-bs-dismiss="alert">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 @endif
 
                 @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-triangle me-2"></i>{{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <div class="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-xl shadow-lg mb-6 p-4 flex items-center justify-between" role="alert">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-3"></i>
+                            <span>{{ session('error') }}</span>
+                        </div>
+                        <button type="button" class="text-white hover:text-red-100 transition-colors" data-bs-dismiss="alert">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 @endif
 
@@ -412,10 +438,6 @@
             }
         });
     </script>
-
-    <style>
-
-    </style>
 
     @yield('scripts')
 </body>

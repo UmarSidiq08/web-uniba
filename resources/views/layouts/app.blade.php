@@ -16,11 +16,14 @@
             theme: {
                 extend: {
                     colors: {
-                        'mint-primary': '#00c9a7',
-                        'mint-secondary': '#00bcd4',
-                        'mint-dark': '#00a693',
-                        'mint-light': '#4dd0e1',
-                        'mint-blue': '#0891b2',
+                        'orange-primary': '#FF8A00',
+                        'orange-secondary': '#FFB347',
+                        'orange-dark': '#E67700',
+                        'yellow-warm': '#FFD700',
+                        'yellow-light': '#FFF3A0',
+                        'cream-base': '#FFF8DC',
+                        'cream-light': '#FFFACD',
+                        'amber-warm': '#FFBF00',
                     }
                 }
             }
@@ -28,13 +31,13 @@
     </script>
 
     <style>
-        /* Custom gradient backgrounds that can't be done with Tailwind alone */
+        /* Custom gradient backgrounds */
         .navbar-gradient {
-            background: linear-gradient(135deg, #00c9a7, #00bcd4, #0891b2) !important;
+            background: linear-gradient(135deg, #FF8A00, #FFD700, #FFBF00) !important;
         }
 
         .navbar-sticky {
-            background: rgba(0, 201, 167, 0.95) !important;
+            background: rgba(255, 138, 0, 0.95) !important;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -46,10 +49,10 @@
             height: 2px;
             bottom: 0;
             left: 50%;
-            background: linear-gradient(90deg, #fff, #4dd0e1);
+            background: linear-gradient(90deg, #fff, #FFF3A0);
             transition: all 0.3s ease;
             transform: translateX(-50%);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 8px rgba(255,255,255,0.8);
         }
 
         .nav-link-underline:hover::after,
@@ -58,12 +61,12 @@
         }
 
         .dropdown-item-gradient:hover {
-            background: linear-gradient(45deg, #00c9a7, #0891b2);
+            background: linear-gradient(45deg, #FF8A00, #FFBF00);
             color: white;
         }
 
         .alert-gradient-success {
-            background: linear-gradient(45deg, #00a693, #00bcd4);
+            background: linear-gradient(45deg, #28a745, #20c997);
         }
 
         .alert-gradient-danger {
@@ -71,15 +74,15 @@
         }
 
         .footer-gradient {
-            background: linear-gradient(45deg, #212529, #495057) !important;
+            background: linear-gradient(45deg, #FF8A00, #E67700) !important;
         }
 
         .btn-gradient-primary {
-            background: linear-gradient(45deg, #00c9a7, #0891b2);
+            background: linear-gradient(45deg, #FF8A00, #FFBF00);
         }
 
         .btn-gradient-primary:hover {
-            background: linear-gradient(45deg, #00a693, #00bcd4);
+            background: linear-gradient(45deg, #E67700, #FFD700);
         }
 
         /* Smooth scrolling */
@@ -89,7 +92,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gradient-to-br from-cream-light to-cream-base">
     <nav class="navbar-gradient fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out shadow-lg" id="mainNavbar">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between py-3">
@@ -115,10 +118,10 @@
                 <div class="hidden lg:flex items-center space-x-8">
                     <!-- Left Navigation -->
                     <div class="flex items-center space-x-6">
-                        <a href="{{ route('home') }}" class="nav-link-underline relative text-white font-medium hover:text-gray-100 transition-colors duration-300 hover:drop-shadow-lg">
+                        <a href="{{ route('home') }}" class="nav-link-underline relative text-white font-medium hover:text-yellow-100 transition-colors duration-300 hover:drop-shadow-lg">
                             <i class="fas fa-home mr-1"></i> Home
                         </a>
-                        <a href="{{ route('persyaratan') }}" class="nav-link-underline relative text-white font-medium hover:text-gray-100 transition-colors duration-300 hover:drop-shadow-lg">
+                        <a href="{{ route('persyaratan') }}" class="nav-link-underline relative text-white font-medium hover:text-yellow-100 transition-colors duration-300 hover:drop-shadow-lg">
                             <i class="fas fa-list-check mr-1"></i> Persyaratan
                         </a>
                     </div>
@@ -127,21 +130,21 @@
                     <div class="flex items-center space-x-4">
                         @auth
                             @if (auth()->user()->isAdmin())
-                                <a href="{{ route('admin.dashboard') }}" class="nav-link-underline relative text-white font-medium hover:text-gray-100 transition-colors duration-300 hover:drop-shadow-lg">
+                                <a href="{{ route('admin.dashboard') }}" class="nav-link-underline relative text-white font-medium hover:text-yellow-100 transition-colors duration-300 hover:drop-shadow-lg">
                                     <i class="fas fa-tachometer-alt mr-1"></i> Dashboard Admin
                                 </a>
                             @endif
 
                             <!-- User Dropdown -->
                             <div class="relative dropdown">
-                                <button class="nav-link-underline relative text-white font-medium hover:text-gray-100 transition-colors duration-300 hover:drop-shadow-lg flex items-center space-x-1"
+                                <button class="nav-link-underline relative text-white font-medium hover:text-yellow-100 transition-colors duration-300 hover:drop-shadow-lg flex items-center space-x-1"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false">
                                     <i class="fas fa-user-circle mr-1"></i>
                                     <span>{{ auth()->user()->name }}</span>
                                     <i class="fas fa-chevron-down text-sm ml-1"></i>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl border-0 py-2">
+                                <ul class="dropdown-menu dropdown-menu-end absolute right-0 mt-2 w-48 bg-gradient-to-br from-cream-base to-cream-light rounded-lg shadow-2xl border-0 py-2">
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST" class="block">
                                             @csrf
@@ -153,10 +156,10 @@
                                 </ul>
                             </div>
                         @else
-                            <a href="{{ route('login') }}" class="nav-link-underline relative text-white font-medium hover:text-gray-100 transition-colors duration-300 hover:drop-shadow-lg">
+                            <a href="{{ route('login') }}" class="nav-link-underline relative text-white font-medium hover:text-yellow-100 transition-colors duration-300 hover:drop-shadow-lg">
                                 <i class="fas fa-sign-in-alt mr-1"></i> Login
                             </a>
-                            <a href="{{ route('register') }}" class="nav-link-underline relative text-white font-medium hover:text-gray-100 transition-colors duration-300 hover:drop-shadow-lg">
+                            <a href="{{ route('register') }}" class="nav-link-underline relative text-white font-medium hover:text-yellow-100 transition-colors duration-300 hover:drop-shadow-lg">
                                 <i class="fas fa-user-plus mr-1"></i> Register
                             </a>
                         @endauth
@@ -165,13 +168,13 @@
 
                 <!-- Mobile Navigation (Collapsible) -->
                 <div class="collapse navbar-collapse lg:hidden" id="navbarNav">
-                    <div class="absolute top-full left-0 right-0 bg-mint-primary bg-opacity-96 mt-4 mx-4 rounded-lg shadow-xl border border-white border-opacity-20 p-4">
+                    <div class="absolute top-full left-0 right-0 bg-orange-primary bg-opacity-96 mt-4 mx-4 rounded-lg shadow-xl border border-white border-opacity-20 p-4">
                         <!-- Mobile Left Navigation -->
                         <div class="space-y-2 mb-4">
-                            <a href="{{ route('home') }}" class="block text-white font-medium hover:text-gray-100 transition-colors duration-300 py-2">
+                            <a href="{{ route('home') }}" class="block text-white font-medium hover:text-yellow-100 transition-colors duration-300 py-2">
                                 <i class="fas fa-home mr-2"></i> Home
                             </a>
-                            <a href="{{ route('persyaratan') }}" class="block text-white font-medium hover:text-gray-100 transition-colors duration-300 py-2">
+                            <a href="{{ route('persyaratan') }}" class="block text-white font-medium hover:text-yellow-100 transition-colors duration-300 py-2">
                                 <i class="fas fa-list-check mr-2"></i> Persyaratan
                             </a>
                         </div>
@@ -180,7 +183,7 @@
                         <div class="space-y-2 border-t border-white border-opacity-30 pt-4">
                             @auth
                                 @if (auth()->user()->isAdmin())
-                                    <a href="{{ route('admin.dashboard') }}" class="block text-white font-medium hover:text-gray-100 transition-colors duration-300 py-2">
+                                    <a href="{{ route('admin.dashboard') }}" class="block text-white font-medium hover:text-yellow-100 transition-colors duration-300 py-2">
                                         <i class="fas fa-tachometer-alt mr-2"></i> Dashboard Admin
                                     </a>
                                 @endif
@@ -191,15 +194,15 @@
 
                                 <form action="{{ route('logout') }}" method="POST" class="block">
                                     @csrf
-                                    <button type="submit" class="text-white font-medium hover:text-gray-100 transition-colors duration-300 py-2 text-left w-full">
+                                    <button type="submit" class="text-white font-medium hover:text-yellow-100 transition-colors duration-300 py-2 text-left w-full">
                                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                                     </button>
                                 </form>
                             @else
-                                <a href="{{ route('login') }}" class="block text-white font-medium hover:text-gray-100 transition-colors duration-300 py-2">
+                                <a href="{{ route('login') }}" class="block text-white font-medium hover:text-yellow-100 transition-colors duration-300 py-2">
                                     <i class="fas fa-sign-in-alt mr-2"></i> Login
                                 </a>
-                                <a href="{{ route('register') }}" class="block text-white font-medium hover:text-gray-100 transition-colors duration-300 py-2">
+                                <a href="{{ route('register') }}" class="block text-white font-medium hover:text-yellow-100 transition-colors duration-300 py-2">
                                     <i class="fas fa-user-plus mr-2"></i> Register
                                 </a>
                             @endauth
@@ -219,7 +222,7 @@
                         <i class="fas fa-check-circle mr-3"></i>
                         <span>{{ session('success') }}</span>
                     </div>
-                    <button type="button" class="text-white hover:text-gray-200 transition-colors" data-bs-dismiss="alert" aria-label="Close">
+                    <button type="button" class="text-white hover:text-green-100 transition-colors" data-bs-dismiss="alert" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -233,7 +236,7 @@
                         <i class="fas fa-exclamation-triangle mr-3"></i>
                         <span>{{ session('error') }}</span>
                     </div>
-                    <button type="button" class="text-white hover:text-gray-200 transition-colors" data-bs-dismiss="alert" aria-label="Close">
+                    <button type="button" class="text-white hover:text-red-100 transition-colors" data-bs-dismiss="alert" aria-label="Close">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -243,13 +246,16 @@
         @yield('content')
     </main>
 
-    <footer class="footer-gradient text-white text-center py-6 mt-12">
+    <footer class="footer-gradient text-white text-center py-8 mt-12">
         <div class="container mx-auto px-4">
             <div class="flex justify-center items-center">
-                <p class="mb-0 flex items-center">
-                    <i class="fas fa-graduation-cap mr-2"></i>
+                <p class="mb-0 flex items-center text-lg font-medium">
+                    <i class="fas fa-graduation-cap mr-3 text-xl"></i>
                     &copy; 2025 Sistem Pendaftaran Beasiswa
                 </p>
+            </div>
+            <div class="mt-4 text-orange-100 text-sm">
+                Membangun masa depan melalui pendidikan berkualitas
             </div>
         </div>
     </footer>

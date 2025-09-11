@@ -7,15 +7,15 @@
         <div class="max-w-6xl mx-auto">
             <!-- Header Section -->
             <div class="text-center mb-8">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
+                <h2 class="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
                     <i class="fas fa-graduation-cap mr-2"></i>Pendaftaran Beasiswa
                 </h2>
-                <p class="text-gray-600 text-lg">Lengkapi formulir di bawah untuk mendaftar beasiswa</p>
+                <p class="text-amber-700 text-lg">Lengkapi formulir di bawah untuk mendaftar beasiswa</p>
             </div>
 
             <!-- Main Registration Card -->
             <div class="bg-white rounded-xl shadow-lg overflow-hidden border-0">
-                <div class="bg-gradient-to-r from-teal-500 to-cyan-600 py-6 px-6">
+                <div class="bg-gradient-to-r from-orange-500 to-amber-600 py-6 px-6">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                         <div class="mb-4 md:mb-0">
                             <h4 class="text-xl font-semibold text-white mb-1">
@@ -28,7 +28,7 @@
                         </div>
                         <div class="scholarship-amount">
                             <span
-                                class="bg-gradient-to-r from-green-500 to-teal-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
                                 <i class="fas fa-money-bill-wave mr-1"></i>Rp
                                 {{ number_format($beasiswa->jumlah_dana, 0, ',', '.') }}
                             </span>
@@ -38,30 +38,30 @@
 
                 <div class="p-6 md:p-10">
                     <!-- Scholarship Info Section -->
-                    <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 mb-8 border-l-4 border-teal-500">
-                        <h5 class="text-lg font-semibold text-gray-700 mb-4 border-b-2 border-teal-500 pb-2 inline-block">
-                            <i class="fas fa-info-circle text-blue-400 mr-2"></i>Informasi Beasiswa
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-100 rounded-xl p-6 mb-8 border-l-4 border-orange-500">
+                        <h5 class="text-lg font-semibold text-amber-800 mb-4 border-b-2 border-orange-500 pb-2 inline-block">
+                            <i class="fas fa-info-circle text-orange-400 mr-2"></i>Informasi Beasiswa
                         </h5>
                         <div class="bg-white rounded-lg p-6 shadow-sm">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-1">Dana Beasiswa</label>
-                                    <p class="text-green-600 font-bold text-lg">
+                                    <label class="block text-sm font-medium text-amber-700 mb-1">Dana Beasiswa</label>
+                                    <p class="text-yellow-600 font-bold text-lg">
                                         Rp {{ number_format($beasiswa->jumlah_dana, 0, ',', '.') }}
                                     </p>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-1">Batas Waktu
+                                    <label class="block text-sm font-medium text-amber-700 mb-1">Batas Waktu
                                         Pendaftaran</label>
-                                    <p class="text-red-600 font-bold text-lg">
+                                    <p class="text-orange-600 font-bold text-lg">
                                         {{ \Carbon\Carbon::parse($beasiswa->tanggal_tutup)->format('d M Y') }}
                                     </p>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-600 mb-2">Persyaratan</label>
+                                <label class="block text-sm font-medium text-amber-700 mb-2">Persyaratan</label>
                                 <div
-                                    class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-gray-700 text-sm md:text-base whitespace-pre-line">
+                                    class="bg-amber-50 border border-orange-200 rounded-lg p-4 text-amber-800 text-sm md:text-base whitespace-pre-line">
                                     {{ $beasiswa->persyaratan }}</div>
                             </div>
                         </div>
@@ -69,8 +69,8 @@
 
                     <!-- Registration Form -->
                     <div class="form-section">
-                        <h5 class="text-lg font-semibold text-gray-700 mb-6 border-b-2 border-blue-500 pb-2 inline-block">
-                            <i class="fas fa-edit text-blue-500 mr-2"></i>Formulir Pendaftaran
+                        <h5 class="text-lg font-semibold text-amber-800 mb-6 border-b-2 border-orange-500 pb-2 inline-block">
+                            <i class="fas fa-edit text-orange-500 mr-2"></i>Formulir Pendaftaran
                         </h5>
 
                         <form method="POST" action="{{ route('pendaftar.store', $beasiswa) }}"
@@ -78,18 +78,18 @@
                             @csrf
 
                             <!-- Personal Information -->
-                            <div class="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-blue-500">
-                                <h6 class="text-md font-semibold text-gray-700 mb-4">
-                                    <i class="fas fa-user-circle text-blue-400 mr-2"></i>Data Personal
+                            <div class="bg-amber-50 rounded-xl p-6 mb-6 border-l-4 border-orange-500">
+                                <h6 class="text-md font-semibold text-amber-800 mb-4">
+                                    <i class="fas fa-user-circle text-orange-400 mr-2"></i>Data Personal
                                 </h6>
                                 <div class="bg-white rounded-lg p-6 shadow-sm">
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div>
-                                            <label for="nama_lengkap" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-user mr-1 text-gray-500"></i>Nama Lengkap *
+                                            <label for="nama_lengkap" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-user mr-1 text-orange-500"></i>Nama Lengkap *
                                             </label>
                                             <input type="text"
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('nama_lengkap') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('nama_lengkap') border-red-500 @enderror"
                                                 id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
                                                 placeholder="Masukkan nama lengkap" required>
                                             @error('nama_lengkap')
@@ -98,11 +98,11 @@
                                         </div>
 
                                         <div>
-                                            <label for="nim" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-id-badge mr-1 text-gray-500"></i>NIM *
+                                            <label for="nim" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-id-badge mr-1 text-orange-500"></i>NIM *
                                             </label>
                                             <input type="number"
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('nim') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('nim') border-red-500 @enderror"
                                                 id="nim" name="nim" value="{{ old('nim') }}"
                                                 placeholder="Masukkan NIM" required>
                                             @error('nim')
@@ -113,11 +113,11 @@
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div>
-                                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-envelope mr-1 text-gray-500"></i>Email *
+                                            <label for="email" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-envelope mr-1 text-orange-500"></i>Email *
                                             </label>
                                             <input type="email"
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('email') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror"
                                                 id="email" name="email"
                                                 value="{{ old('email', Auth::user()->email ?? '') }}"
                                                 placeholder="contoh@email.com" required>
@@ -127,11 +127,11 @@
                                         </div>
 
                                         <div>
-                                            <label for="no_hp" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-phone mr-1 text-gray-500"></i>No. HP *
+                                            <label for="no_hp" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-phone mr-1 text-orange-500"></i>No. HP *
                                             </label>
                                             <input type="text"
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('no_hp') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('no_hp') border-red-500 @enderror"
                                                 id="no_hp" name="no_hp" value="{{ old('no_hp') }}"
                                                 placeholder="08xxxxxxxxxx" required>
                                             @error('no_hp')
@@ -143,11 +143,11 @@
                                     <!-- Academic Information -->
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div>
-                                            <label for="fakultas" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-university mr-1 text-gray-500"></i>Fakultas *
+                                            <label for="fakultas" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-university mr-1 text-orange-500"></i>Fakultas *
                                             </label>
                                             <input type="text"
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('fakultas') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('fakultas') border-red-500 @enderror"
                                                 id="fakultas" name="fakultas" value="{{ old('fakultas') }}"
                                                 placeholder="Contoh: Teknik" required>
                                             @error('fakultas')
@@ -156,11 +156,11 @@
                                         </div>
 
                                         <div>
-                                            <label for="jurusan" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-graduation-cap mr-1 text-gray-500"></i>Jurusan *
+                                            <label for="jurusan" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-graduation-cap mr-1 text-orange-500"></i>Jurusan *
                                             </label>
                                             <input type="text"
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('jurusan') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('jurusan') border-red-500 @enderror"
                                                 id="jurusan" name="jurusan" value="{{ old('jurusan') }}"
                                                 placeholder="Contoh: Teknik Informatika" required>
                                             @error('jurusan')
@@ -171,11 +171,11 @@
 
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label for="semester" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-calendar-check mr-1 text-gray-500"></i>Semester *
+                                            <label for="semester" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-calendar-check mr-1 text-orange-500"></i>Semester *
                                             </label>
                                             <select
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('semester') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('semester') border-red-500 @enderror"
                                                 id="semester" name="semester" required>
                                                 <option value="">-- Pilih Semester --</option>
                                                 @for ($i = 1; $i <= 14; $i++)
@@ -190,11 +190,11 @@
                                         </div>
 
                                         <div>
-                                            <label for="ipk" class="block text-sm font-medium text-gray-700 mb-1">
-                                                <i class="fas fa-chart-line mr-1 text-gray-500"></i>IPK *
+                                            <label for="ipk" class="block text-sm font-medium text-amber-800 mb-1">
+                                                <i class="fas fa-chart-line mr-1 text-orange-500"></i>IPK *
                                             </label>
                                             <input type="number"
-                                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('ipk') border-red-500 @enderror"
+                                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('ipk') border-red-500 @enderror"
                                                 id="ipk" name="ipk" value="{{ old('ipk') }}"
                                                 min="0" max="4" step="0.01" placeholder="3.50"
                                                 required>
@@ -207,22 +207,22 @@
                             </div>
 
                             <!-- Reason Section -->
-                            <div class="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-yellow-500">
-                                <h6 class="text-md font-semibold text-gray-700 mb-4">
-                                    <i class="fas fa-comment-alt text-yellow-500 mr-2"></i>Motivasi
+                            <div class="bg-yellow-50 rounded-xl p-6 mb-6 border-l-4 border-yellow-500">
+                                <h6 class="text-md font-semibold text-yellow-800 mb-4">
+                                    <i class="fas fa-comment-alt text-yellow-600 mr-2"></i>Motivasi
                                 </h6>
                                 <div class="bg-white rounded-lg p-6 shadow-sm">
                                     <div>
                                         <label for="alasan_mendaftar"
-                                            class="block text-sm font-medium text-gray-700 mb-2">
-                                            <i class="fas fa-quote-left mr-1 text-gray-500"></i>Alasan Mendaftar *
+                                            class="block text-sm font-medium text-yellow-800 mb-2">
+                                            <i class="fas fa-quote-left mr-1 text-yellow-600"></i>Alasan Mendaftar *
                                         </label>
                                         <textarea
-                                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent @error('alasan_mendaftar') border-red-500 @enderror"
+                                            class="w-full px-4 py-3 border-2 border-yellow-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent @error('alasan_mendaftar') border-red-500 @enderror"
                                             id="alasan_mendaftar" name="alasan_mendaftar" rows="5"
                                             placeholder="Jelaskan alasan dan motivasi Anda mendaftar beasiswa ini..." required>{{ old('alasan_mendaftar') }}</textarea>
-                                        <div class="text-sm text-gray-500 mt-2">
-                                            <i class="fas fa-lightbulb text-yellow-500 mr-1"></i>
+                                        <div class="text-sm text-yellow-700 mt-2">
+                                            <i class="fas fa-lightbulb text-yellow-600 mr-1"></i>
                                             Jelaskan secara detail mengapa Anda layak mendapatkan beasiswa ini
                                         </div>
                                         @error('alasan_mendaftar')
@@ -233,17 +233,16 @@
                             </div>
 
                             <!-- Dynamic Document Upload Section -->
-                            <!-- Dynamic Document Upload Section -->
                             @if ($beasiswa->required_documents && count($beasiswa->required_documents) > 0)
-    <div class="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-green-500">
-        <h6 class="text-md font-semibold text-gray-700 mb-4">
-            <i class="fas fa-folder-upload text-green-500 mr-2"></i>Dokumen Pendukung
+    <div class="bg-orange-50 rounded-xl p-6 mb-6 border-l-4 border-orange-600">
+        <h6 class="text-md font-semibold text-orange-800 mb-4">
+            <i class="fas fa-folder-upload text-orange-600 mr-2"></i>Dokumen Pendukung
         </h6>
         <div class="bg-white rounded-lg p-6 shadow-sm">
             <div
                 class="grid grid-cols-1 md:grid-cols-{{ count($beasiswa->required_documents) >= 3 ? '3' : (count($beasiswa->required_documents) == 2 ? '2' : '1') }} gap-4">
                 @foreach ($beasiswa->required_documents as $document)
-                    <div class="file-upload-card border-2 border-dashed border-gray-300 rounded-xl p-6 text-center transition-all duration-300 cursor-pointer hover:border-teal-500 hover:bg-teal-50"
+                    <div class="file-upload-card border-2 border-dashed border-orange-300 rounded-xl p-6 text-center transition-all duration-300 cursor-pointer hover:border-orange-500 hover:bg-orange-50"
                         id="card-{{ $document['key'] }}">
                         <label for="{{ $document['key'] }}"
                             class="file-label cursor-pointer">
@@ -253,18 +252,18 @@
                                     id="icon-{{ $document['key'] }}"></i>
                             </div>
                             <div class="file-info">
-                                <h6 class="file-title font-semibold text-gray-700 mb-1">
+                                <h6 class="file-title font-semibold text-amber-800 mb-1">
                                     {{ $document['name'] }}
                                     {{ $document['required'] ? '*' : '' }}
                                 </h6>
-                                <small class="file-desc text-gray-500 text-sm"
+                                <small class="file-desc text-orange-600 text-sm"
                                     id="desc-{{ $document['key'] }}">
                                     Format:
                                     {{ strtoupper(implode(', ', $document['formats'])) }}, Max:
                                     {{ $document['max_size'] }}MB
                                 </small>
                                 @if (!empty($document['description']))
-                                    <div class="text-xs text-gray-400 mt-1">
+                                    <div class="text-xs text-orange-500 mt-1">
                                         {{ $document['description'] }}</div>
                                 @endif
 
@@ -272,8 +271,8 @@
                                 <div class="upload-status mt-3 hidden"
                                     id="status-{{ $document['key'] }}">
                                     <div class="flex items-center justify-center mb-2">
-                                        <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                        <span class="text-green-600 font-medium text-sm"
+                                        <i class="fas fa-check-circle text-orange-600 mr-2"></i>
+                                        <span class="text-orange-700 font-medium text-sm"
                                             id="filename-{{ $document['key'] }}">File berhasil
                                             dipilih</span>
                                     </div>
@@ -282,7 +281,7 @@
                                     <div class="flex justify-center space-x-2 mt-3">
                                         <button type="button"
                                             onclick="previewFile('{{ $document['key'] }}')"
-                                            class="px-3 py-1 text-xs bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                                            class="px-3 py-1 text-xs bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors">
                                             <i class="fas fa-eye mr-1"></i>Lihat File
                                         </button>
                                         <button type="button"
@@ -310,11 +309,11 @@
 @endif
 
                             <!-- Terms and Submit -->
-                            <div class="bg-gray-50 rounded-xl p-6">
+                            <div class="bg-amber-50 rounded-xl p-6">
                                 <div class="bg-yellow-100 border border-yellow-300 rounded-lg p-4 mb-6">
                                     <div class="flex items-start">
                                         <input class="mt-1 mr-3" type="checkbox" id="terms" required>
-                                        <label class="text-gray-700 text-sm" for="terms">
+                                        <label class="text-amber-800 text-sm" for="terms">
                                             Saya menyatakan bahwa data yang saya berikan adalah <strong>benar dan
                                                 valid</strong>.
                                             Saya bersedia menerima konsekuensi jika terbukti memberikan data palsu.
@@ -324,18 +323,18 @@
 
                                 <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                                     <div class="form-info">
-                                        <small class="text-gray-500 text-sm">
+                                        <small class="text-orange-600 text-sm">
                                             <i class="fas fa-shield-alt mr-1"></i>
                                             Data Anda akan dijaga kerahasiaannya
                                         </small>
                                     </div>
                                     <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
                                         <a href="{{ route('home') }}"
-                                            class="bg-white border-2 border-gray-400 text-gray-700 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 text-center">
+                                            class="bg-white border-2 border-orange-400 text-orange-700 px-6 py-3 rounded-full font-semibold hover:bg-orange-50 transition-all duration-300 text-center">
                                             <i class="fas fa-arrow-left mr-2"></i>Kembali
                                         </a>
                                         <button type="submit"
-                                            class="bg-gradient-to-r from-teal-500 to-cyan-600 text-white px-6 py-3 rounded-full font-semibold hover:from-teal-600 hover:to-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg text-center">
+                                            class="bg-gradient-to-r from-orange-500 to-amber-600 text-white px-6 py-3 rounded-full font-semibold hover:from-orange-600 hover:to-amber-700 transition-all duration-300 shadow-md hover:shadow-lg text-center">
                                             <i class="fas fa-paper-plane mr-2"></i>Daftar Sekarang
                                         </button>
                                     </div>
@@ -349,22 +348,22 @@
             <!-- Tips Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                 <div
-                    class="bg-white border-2 border-blue-500 rounded-xl p-6 shadow-md transition-all duration-300 hover:shadow-lg">
-                    <h6 class="text-lg font-semibold text-blue-600 mb-4">
+                    class="bg-white border-2 border-orange-500 rounded-xl p-6 shadow-md transition-all duration-300 hover:shadow-lg">
+                    <h6 class="text-lg font-semibold text-orange-600 mb-4">
                         <i class="fas fa-lightbulb mr-2"></i>Tips Sukses
                     </h6>
                     <ul class="space-y-2">
                         <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                            <span class="text-gray-600 text-sm">Pastikan dokumen berkualitas baik dan jelas</span>
+                            <i class="fas fa-check text-yellow-500 mt-1 mr-2"></i>
+                            <span class="text-amber-700 text-sm">Pastikan dokumen berkualitas baik dan jelas</span>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                            <span class="text-gray-600 text-sm">Tulis alasan mendaftar dengan jujur dan meyakinkan</span>
+                            <i class="fas fa-check text-yellow-500 mt-1 mr-2"></i>
+                            <span class="text-amber-700 text-sm">Tulis alasan mendaftar dengan jujur dan meyakinkan</span>
                         </li>
                         <li class="flex items-start">
-                            <i class="fas fa-check text-green-500 mt-1 mr-2"></i>
-                            <span class="text-gray-600 text-sm">Periksa kembali semua data sebelum mengirim</span>
+                            <i class="fas fa-check text-yellow-500 mt-1 mr-2"></i>
+                            <span class="text-amber-700 text-sm">Periksa kembali semua data sebelum mengirim</span>
                         </li>
                     </ul>
                 </div>
@@ -379,7 +378,7 @@
                             @foreach ($beasiswa->required_documents as $document)
                                 <li class="flex items-start">
                                     <i class="{{ $document['icon'] }} text-{{ $document['color'] }}-500 mt-1 mr-2"></i>
-                                    <span class="text-gray-600 text-sm">
+                                    <span class="text-amber-700 text-sm">
                                         <strong>{{ $document['name'] }}:</strong>
                                         {{ strtoupper(implode(', ', $document['formats'])) }}
                                         (Max {{ $document['max_size'] }}MB)
@@ -388,8 +387,8 @@
                             @endforeach
                         @else
                             <li class="flex items-start">
-                                <i class="fas fa-info text-blue-500 mt-1 mr-2"></i>
-                                <span class="text-gray-600 text-sm">Tidak ada dokumen khusus yang diperlukan</span>
+                                <i class="fas fa-info text-orange-500 mt-1 mr-2"></i>
+                                <span class="text-amber-700 text-sm">Tidak ada dokumen khusus yang diperlukan</span>
                             </li>
                         @endif
                     </ul>
@@ -397,7 +396,6 @@
             </div>
         </div>
     </div>
-
 
 <script>
 function handleFileUpload(documentKey) {
@@ -423,12 +421,12 @@ function handleFileUpload(documentKey) {
         }
 
         // Ubah tampilan card menjadi hijau (success state)
-        card.classList.remove('border-gray-300', 'hover:border-teal-500', 'hover:bg-teal-50');
-        card.classList.add('border-green-500', 'bg-green-50');
+        card.classList.remove('border-orange-300', 'hover:border-orange-500', 'hover:bg-orange-50');
+        card.classList.add('border-orange-600', 'bg-orange-100');
 
         // Ubah icon menjadi check
         icon.className = 'fas fa-check-circle';
-        icon.parentElement.className = 'file-icon text-green-500 text-4xl mb-4';
+        icon.parentElement.className = 'file-icon text-orange-600 text-4xl mb-4';
 
         // Sembunyikan deskripsi format dan tampilkan status
         desc.classList.add('hidden');
@@ -571,12 +569,12 @@ function resetFileStatus(documentKey) {
     const status = document.getElementById('status-' + documentKey);
 
     // Kembalikan ke tampilan awal
-    card.classList.remove('border-green-500', 'bg-green-50');
-    card.classList.add('border-gray-300', 'hover:border-teal-500', 'hover:bg-teal-50');
+    card.classList.remove('border-orange-600', 'bg-orange-100');
+    card.classList.add('border-orange-300', 'hover:border-orange-500', 'hover:bg-orange-50');
 
     // Reset icon - gunakan icon default
     icon.className = 'fas fa-file-upload';
-    icon.parentElement.className = 'file-icon text-gray-500 text-4xl mb-4';
+    icon.parentElement.className = 'file-icon text-orange-500 text-4xl mb-4';
 
     // Tampilkan kembali deskripsi dan sembunyikan status
     desc.classList.remove('hidden');
@@ -684,7 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 counterElement.className = 'text-right text-sm mt-2 text-red-600';
                 textareaElement.value = textareaElement.value.substring(0, maxLength);
             } else {
-                counterElement.className = 'text-right text-sm mt-2 text-gray-500';
+                counterElement.className = 'text-right text-sm mt-2 text-orange-600';
             }
         }
 
@@ -705,7 +703,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailInput = document.getElementById('email');
     if (emailInput && emailInput.value && emailInput.value.includes('@')) {
         emailInput.readOnly = true;
-        emailInput.classList.add('bg-gray-100');
+        emailInput.classList.add('bg-amber-100');
         emailInput.title = 'Email tidak dapat diubah karena sudah sesuai dengan akun Anda';
     }
 });

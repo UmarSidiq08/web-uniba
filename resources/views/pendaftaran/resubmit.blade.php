@@ -8,10 +8,10 @@
 
             <!-- Header -->
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">
-                    <i class="fas fa-edit text-blue-500 mr-2"></i>Edit dan Submit Ulang
+                <h1 class="text-3xl font-bold text-orange-800 mb-2">
+                    <i class="fas fa-edit text-orange-600 mr-2"></i>Edit dan Submit Ulang
                 </h1>
-                <p class="text-gray-600">Perbaiki Beasiswa Anda dan ajukan kembali</p>
+                <p class="text-amber-700">Perbaiki Beasiswa Anda dan ajukan kembali</p>
             </div>
 
             <!-- Previous Rejection Info -->
@@ -36,12 +36,12 @@
             </div>
 
             <!-- Form -->
-            <div class="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+            <div class="bg-white rounded-2xl shadow-lg border border-orange-200 overflow-hidden">
+                <div class="bg-gradient-to-r from-orange-500 to-amber-600 px-6 py-4">
                     <h2 class="text-xl font-bold text-white">
                         <i class="fas fa-graduation-cap mr-2"></i>{{ $pendaftar->beasiswa->nama_beasiswa }}
                     </h2>
-                    <p class="text-blue-100">Dana: Rp {{ number_format($pendaftar->beasiswa->jumlah_dana, 0, ',', '.') }}
+                    <p class="text-orange-100">Dana: Rp {{ number_format($pendaftar->beasiswa->jumlah_dana, 0, ',', '.') }}
                     </p>
                 </div>
 
@@ -52,17 +52,17 @@
 
                     <!-- Personal Information -->
                     <div class="mb-8">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
-                            <i class="fas fa-user text-blue-500 mr-2"></i>Data Personal
+                        <h3 class="text-lg font-semibold text-orange-800 mb-4 border-b border-orange-200 pb-2">
+                            <i class="fas fa-user text-orange-600 mr-2"></i>Data Personal
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block font-medium text-gray-700 mb-2" for="nama_lengkap">
+                                <label class="block font-medium text-amber-800 mb-2" for="nama_lengkap">
                                     Nama Lengkap <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" id="nama_lengkap" name="nama_lengkap"
                                     value="{{ old('nama_lengkap', $pendaftar->nama_lengkap) }}"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('nama_lengkap') border-red-500 @enderror"
+                                    class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('nama_lengkap') border-red-500 @enderror"
                                     required>
                                 @error('nama_lengkap')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -70,12 +70,12 @@
                             </div>
 
                             <div>
-                                <label class="block font-medium text-gray-700 mb-2" for="nim">
+                                <label class="block font-medium text-amber-800 mb-2" for="nim">
                                     NIM <span class="text-red-500">*</span>
                                 </label>
                                 <input type="number" id="nim" name="nim"
                                     value="{{ old('nim', $pendaftar->nim) }}"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('nim') border-red-500 @enderror"
+                                    class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('nim') border-red-500 @enderror"
                                     required>
                                 @error('nim')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -83,22 +83,22 @@
                             </div>
 
                             <div>
-                                <label class="block font-medium text-gray-700 mb-2" for="email">
+                                <label class="block font-medium text-amber-800 mb-2" for="email">
                                     Email <span class="text-red-500">*</span>
                                 </label>
                                 <input type="email" id="email" name="email"
                                     value="{{ old('email', $pendaftar->email) }}" readonly
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed">
-                                <p class="text-xs text-gray-500 mt-1">Email tidak dapat diubah</p>
+                                    class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg bg-amber-100 text-amber-700 cursor-not-allowed">
+                                <p class="text-xs text-orange-600 mt-1">Email tidak dapat diubah</p>
                             </div>
 
                             <div>
-                                <label class="block font-medium text-gray-700 mb-2" for="no_hp">
+                                <label class="block font-medium text-amber-800 mb-2" for="no_hp">
                                     No. HP <span class="text-red-500">*</span>
                                 </label>
                                 <input type="tel" id="no_hp" name="no_hp"
                                     value="{{ old('no_hp', $pendaftar->no_hp) }}"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('no_hp') border-red-500 @enderror"
+                                    class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('no_hp') border-red-500 @enderror"
                                     required>
                                 @error('no_hp')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -119,12 +119,12 @@
 
                                 @if (!$hasAcademicFields && isset($pendaftar->fakultas))
                                     <div>
-                                        <label class="block font-medium text-gray-700 mb-2" for="fakultas">
+                                        <label class="block font-medium text-amber-800 mb-2" for="fakultas">
                                             Fakultas <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text" id="fakultas" name="fakultas"
                                             value="{{ old('fakultas', $pendaftar->fakultas) }}"
-                                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('fakultas') border-red-500 @enderror"
+                                            class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('fakultas') border-red-500 @enderror"
                                             required>
                                         @error('fakultas')
                                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -132,12 +132,12 @@
                                     </div>
 
                                     <div>
-                                        <label class="block font-medium text-gray-700 mb-2" for="jurusan">
+                                        <label class="block font-medium text-amber-800 mb-2" for="jurusan">
                                             Jurusan <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text" id="jurusan" name="jurusan"
                                             value="{{ old('jurusan', $pendaftar->jurusan) }}"
-                                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('jurusan') border-red-500 @enderror"
+                                            class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('jurusan') border-red-500 @enderror"
                                             required>
                                         @error('jurusan')
                                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -145,11 +145,11 @@
                                     </div>
 
                                     <div>
-                                        <label class="block font-medium text-gray-700 mb-2" for="semester">
+                                        <label class="block font-medium text-amber-800 mb-2" for="semester">
                                             Semester <span class="text-red-500">*</span>
                                         </label>
                                         <select id="semester" name="semester"
-                                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('semester') border-red-500 @enderror"
+                                            class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('semester') border-red-500 @enderror"
                                             required>
                                             <option value="">-- Pilih Semester --</option>
                                             @for ($i = 1; $i <= 14; $i++)
@@ -165,12 +165,12 @@
                                     </div>
 
                                     <div>
-                                        <label class="block font-medium text-gray-700 mb-2" for="ipk">
+                                        <label class="block font-medium text-amber-800 mb-2" for="ipk">
                                             IPK <span class="text-red-500">*</span>
                                         </label>
                                         <input type="number" id="ipk" name="ipk" step="0.01" min="0"
                                             max="4" value="{{ old('ipk', $pendaftar->ipk) }}"
-                                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('ipk') border-red-500 @enderror"
+                                            class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('ipk') border-red-500 @enderror"
                                             required>
                                         @error('ipk')
                                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -183,32 +183,30 @@
 
                     <!-- Alasan Mendaftar -->
                     <div class="mb-8">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
-                            <i class="fas fa-comment-alt text-yellow-500 mr-2"></i>Alasan Mendaftar
+                        <h3 class="text-lg font-semibold text-orange-800 mb-4 border-b border-orange-200 pb-2">
+                            <i class="fas fa-comment-alt text-yellow-600 mr-2"></i>Alasan Mendaftar
                         </h3>
                         <div>
-                            <label class="block font-medium text-gray-700 mb-2" for="alasan_mendaftar">
+                            <label class="block font-medium text-amber-800 mb-2" for="alasan_mendaftar">
                                 Jelaskan alasan Anda mendaftar untuk beasiswa ini <span class="text-red-500">*</span>
                             </label>
                             <textarea id="alasan_mendaftar" name="alasan_mendaftar" rows="5"
-                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none @error('alasan_mendaftar') border-red-500 @enderror"
+                                class="w-full px-4 py-3 border-2 border-orange-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none @error('alasan_mendaftar') border-red-500 @enderror"
                                 placeholder="Tulis alasan Anda dengan jelas dan detail..." required>{{ old('alasan_mendaftar', $pendaftar->alasan_mendaftar) }}</textarea>
                             @error('alasan_mendaftar')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
-                    <!-- Replace the file input section in resubmit.blade.php -->
-
 
                     <!-- Dynamic Document Upload -->
                     @if ($pendaftar->beasiswa->required_documents && is_array($pendaftar->beasiswa->required_documents))
                         <div class="mb-8">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2">
-                                <i class="fas fa-folder-open text-purple-500 mr-2"></i>Upload Dokumen
+                            <h3 class="text-lg font-semibold text-orange-800 mb-4 border-b border-orange-200 pb-2">
+                                <i class="fas fa-folder-open text-orange-600 mr-2"></i>Upload Dokumen
                             </h3>
-                            <p class="text-sm text-gray-600 mb-6">
-                                <i class="fas fa-info-circle text-blue-500 mr-1"></i>
+                            <p class="text-sm text-amber-700 mb-6">
+                                <i class="fas fa-info-circle text-orange-500 mr-1"></i>
                                 Kosongkan jika tidak ingin mengubah file yang sudah ada
                             </p>
 
@@ -267,13 +265,13 @@
                             <div class="grid {{ $gridCols }} gap-6">
                                 @foreach ($pendaftar->beasiswa->required_documents as $document)
                                     @php
-                                        $colorClass = $colorClasses[$document['color']] ?? $colorClasses['gray'];
+                                        $colorClass = $colorClasses[$document['color']] ?? $colorClasses['orange'];
                                         $textColorClass =
-                                            $textColorClasses[$document['color']] ?? $textColorClasses['gray'];
+                                            $textColorClasses[$document['color']] ?? $textColorClasses['orange'];
                                         $btnColorClass =
-                                            $btnColorClasses[$document['color']] ?? $btnColorClasses['gray'];
+                                            $btnColorClasses[$document['color']] ?? $btnColorClasses['orange'];
                                         $linkColorClass =
-                                            $linkColorClasses[$document['color']] ?? $linkColorClasses['gray'];
+                                            $linkColorClasses[$document['color']] ?? $linkColorClasses['orange'];
 
                                         $acceptedFormats = '.' . implode(',.', $document['formats']);
                                         $formatText = strtoupper(implode(', ', $document['formats']));
@@ -288,28 +286,23 @@
                                         <div class="text-4xl mb-4 {{ $textColorClass }}">
                                             <i class="{{ $document['icon'] }}"></i>
                                         </div>
-                                        <h4 class="font-semibold text-gray-800 mb-2">
+                                        <h4 class="font-semibold text-orange-800 mb-2">
                                             {{ $document['name'] }}
-                                            {{-- @if ($document['required'])
-                                                <span class="text-red-500">*</span>
-                                            @endif --}}
                                         </h4>
 
                                         @if ($document['description'])
-                                            <p class="text-xs text-gray-600 mb-3">{{ $document['description'] }}</p>
+                                            <p class="text-xs text-orange-600 mb-3">{{ $document['description'] }}</p>
                                         @endif
 
                                         <input type="file" id="{{ $document['key'] }}" name="{{ $document['key'] }}"
                                             accept="{{ $acceptedFormats }}" class="hidden">
-
-
 
                                         <label for="{{ $document['key'] }}"
                                             class="cursor-pointer inline-block text-white px-4 py-2 rounded-lg transition-colors duration-200 mb-3 {{ $btnColorClass }}">
                                             <i class="fas fa-upload mr-2"></i>Pilih File
                                         </label>
 
-                                        <div class="text-xs text-gray-600">
+                                        <div class="text-xs text-orange-700">
                                             @if ($currentFile)
                                                 <p>File saat ini:
                                                     <a href="{{ asset('storage/documents/' . $currentFile) }}"
@@ -320,11 +313,9 @@
                                             @endif
                                             <p class="mt-1">{{ $formatText }} (Max: {{ $document['max_size'] }}MB)
                                             </p>
-
-
                                         </div>
 
-                                        <p id="{{ $document['key'] }}-file-name" class="text-sm text-gray-700 mt-2"></p>
+                                        <p id="{{ $document['key'] }}-file-name" class="text-sm text-orange-800 mt-2"></p>
 
                                         @error($document['key'])
                                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -336,13 +327,13 @@
                     @endif
 
                     <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-orange-200">
                         <button type="submit"
-                            class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105">
+                            class="flex-1 bg-gradient-to-r from-orange-500 to-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-orange-600 hover:to-amber-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105">
                             <i class="fas fa-paper-plane mr-2"></i>Submit Ulang Beasiswa
                         </button>
                         <a href="{{ route('status') }}"
-                            class="flex-1 bg-gray-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 text-center">
+                            class="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-200 text-center">
                             <i class="fas fa-arrow-left mr-2"></i>Kembali ke Status
                         </a>
                     </div>
@@ -350,7 +341,7 @@
             </div>
 
             <!-- Guidelines -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-8">
+            <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-6 mt-8">
                 <h3 class="text-lg font-semibold text-yellow-800 mb-3">
                     <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>Tips untuk Resubmit
                 </h3>
@@ -412,11 +403,11 @@
 
                                 display.innerHTML =
                                     `<strong>File baru:</strong> ${fileName} (${fileSize} MB)`;
-                                display.classList.add('text-green-600');
+                                display.classList.add('text-orange-700');
                                 display.classList.remove('text-red-500');
                             } else {
                                 display.innerHTML = '';
-                                display.classList.remove('text-green-600', 'text-red-500');
+                                display.classList.remove('text-orange-700', 'text-red-500');
                             }
                         });
                     }
@@ -460,10 +451,10 @@
 
                                 display.innerHTML =
                                     `<strong>File baru:</strong> ${fileName} (${fileSize} MB)`;
-                                display.classList.add('text-green-600');
+                                display.classList.add('text-orange-700');
                             } else {
                                 display.innerHTML = '';
-                                display.classList.remove('text-green-600');
+                                display.classList.remove('text-orange-700');
                             }
                         });
                     }

@@ -3,51 +3,51 @@
 @section('title', 'Login')
 
 @section('content')
-<div class="login-container">
+<div class="login-container relative min-h-screen overflow-hidden">
     <!-- Background Elements -->
-    <div class="background-elements">
-        <div class="floating-shape shape-1"></div>
-        <div class="floating-shape shape-2"></div>
-        <div class="floating-shape shape-3"></div>
-        <div class="floating-shape shape-4"></div>
+    <div class="background-elements absolute inset-0 pointer-events-none overflow-hidden">
+        <div class="floating-shape shape-1 absolute rounded-full opacity-10"></div>
+        <div class="floating-shape shape-2 absolute rounded-full opacity-10"></div>
+        <div class="floating-shape shape-3 absolute rounded-full opacity-10"></div>
+        <div class="floating-shape shape-4 absolute rounded-full opacity-10"></div>
     </div>
 
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-5 col-lg-4">
+    <div class="container mx-auto px-4">
+        <div class="row flex justify-center items-center min-h-screen">
+            <div class="col-md-5 col-lg-4 w-full md:w-5/12 lg:w-4/12">
                 <!-- Login Card -->
-                <div class="login-card">
+                <div class="login-card bg-white rounded-3xl shadow-2xl overflow-hidden relative backdrop-blur-lg border border-white/20">
                     <!-- Card Header -->
-                    <div class="login-header">
-                        <div class="login-icon">
+                    <div class="login-header px-10 pt-12 pb-8 text-center relative">
+                        <div class="login-icon w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center text-3xl text-white shadow-lg">
                             <i class="fas fa-sign-in-alt"></i>
                         </div>
-                        <h2 class="login-title">Selamat Datang</h2>
-                        <p class="login-subtitle">Masuk ke akun Anda untuk melanjutkan</p>
+                        <h2 class="login-title text-3xl font-bold text-gray-800 mb-2">Selamat Datang</h2>
+                        <p class="login-subtitle text-base text-gray-600 m-0">Masuk ke akun Anda untuk melanjutkan</p>
                     </div>
 
                     <!-- Card Body -->
-                    <div class="login-body">
+                    <div class="login-body px-10 pb-10">
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
                             
                             <!-- Email Field -->
-                            <div class="form-group">
-                                <label for="email" class="form-label">
-                                    <i class="fas fa-envelope"></i> Email
+                            <div class="form-group mb-6">
+                                <label for="email" class="form-label block font-semibold text-sm text-gray-800 mb-2 tracking-wide">
+                                    <i class="fas fa-envelope mr-2"></i> Email
                                 </label>
-                                <div class="input-wrapper">
+                                <div class="input-wrapper relative">
                                     <input type="email" 
-                                           class="form-input @error('email') is-invalid @enderror" 
+                                           class="form-input w-full px-5 py-4 text-base text-gray-800 bg-gray-50 border-2 border-transparent rounded-xl transition-all duration-300 outline-none @error('email') is-invalid @enderror" 
                                            id="email" 
                                            name="email" 
                                            value="{{ old('email') }}" 
                                            placeholder="Masukkan email Anda"
                                            required>
-                                    <div class="input-focus-border"></div>
+                                    <div class="input-focus-border absolute bottom-0 left-1/2 w-0 h-0.5 rounded transition-all duration-300 transform -translate-x-1/2"></div>
                                 </div>
                                 @error('email')
-                                    <div class="error-message">
+                                    <div class="error-message text-red-600 text-sm mt-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
                                         <i class="fas fa-exclamation-circle"></i>
                                         {{ $message }}
                                     </div>
@@ -55,24 +55,24 @@
                             </div>
 
                             <!-- Password Field -->
-                            <div class="form-group">
-                                <label for="password" class="form-label">
-                                    <i class="fas fa-lock"></i> Password
+                            <div class="form-group mb-6">
+                                <label for="password" class="form-label block font-semibold text-sm text-gray-800 mb-2 tracking-wide">
+                                    <i class="fas fa-lock mr-2"></i> Password
                                 </label>
-                                <div class="input-wrapper">
+                                <div class="input-wrapper relative">
                                     <input type="password" 
-                                           class="form-input @error('password') is-invalid @enderror" 
+                                           class="form-input w-full px-5 py-4 text-base text-gray-800 bg-gray-50 border-2 border-transparent rounded-xl transition-all duration-300 outline-none @error('password') is-invalid @enderror" 
                                            id="password" 
                                            name="password" 
                                            placeholder="Masukkan password Anda"
                                            required>
-                                    <div class="input-focus-border"></div>
-                                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                                    <div class="input-focus-border absolute bottom-0 left-1/2 w-0 h-0.5 rounded transition-all duration-300 transform -translate-x-1/2"></div>
+                                    <button type="button" class="password-toggle absolute right-4 top-1/2 transform -translate-y-1/2 bg-transparent border-0 text-gray-600 cursor-pointer p-2 rounded-full transition-all duration-300" onclick="togglePassword()">
                                         <i class="fas fa-eye" id="toggleIcon"></i>
                                     </button>
                                 </div>
                                 @error('password')
-                                    <div class="error-message">
+                                    <div class="error-message text-red-600 text-sm mt-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
                                         <i class="fas fa-exclamation-circle"></i>
                                         {{ $message }}
                                     </div>
@@ -80,24 +80,24 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <button type="submit" class="btn-login">
-                                <span class="btn-content">
+                            <button type="submit" class="btn-login w-full px-8 py-4 text-white border-0 rounded-xl text-lg font-semibold cursor-pointer transition-all duration-300 relative overflow-hidden mb-6 shadow-lg">
+                                <span class="btn-content relative z-10 flex items-center justify-center gap-2">
                                     <i class="fas fa-sign-in-alt"></i>
                                     Masuk
                                 </span>
-                                <div class="btn-shine"></div>
+                                <div class="btn-shine absolute top-0 -left-full w-full h-full transition-all duration-500"></div>
                             </button>
                         </form>
                         
                         <!-- Divider -->
-                        <div class="divider">
-                            <span class="divider-text">atau</span>
+                        <div class="divider text-center my-8 relative">
+                            <span class="divider-text bg-white px-4 text-gray-600 text-sm relative z-10">atau</span>
                         </div>
                         
                         <!-- Register Link -->
-                        <div class="register-link">
-                            <p>Belum punya akun?</p>
-                            <a href="{{ route('register') }}" class="btn-register">
+                        <div class="register-link text-center">
+                            <p class="text-gray-600 mb-4 text-base">Belum punya akun?</p>
+                            <a href="{{ route('register') }}" class="btn-register inline-flex items-center gap-2 px-6 py-3 bg-transparent border-2 rounded-xl no-underline font-semibold text-base transition-all duration-300">
                                 <i class="fas fa-user-plus"></i>
                                 Daftar Sekarang
                             </a>
@@ -109,91 +109,72 @@
     </div>
 </div>
 
-<!-- Custom CSS -->
+<!-- Custom CSS with New Color Palette -->
 <style>
-/* Color Variables */
+/* New Color Variables Based on Palette */
 :root {
-    --mint-primary: #00c9a7;
-    --mint-secondary: #00bcd4;
-    --mint-dark: #00a693;
-    --mint-light: #4dd0e1;
-    --mint-blue: #0891b2;
-    --success-color: #28a745;
-    --warning-color: #ffc107;
-    --danger-color: #dc3545;
-    --text-primary: #2c3e50;
-    --text-secondary: #6c757d;
-    --bg-light: #f8f9fa;
+    --primary-orange: #FF9800;
+    --dark-orange: #F57C00;
+    --light-orange: #FFB74D;
+    --primary-yellow: #FFD600;
+    --dark-yellow: #FFC107;
+    --light-yellow: #FFEB3B;
+    --primary-cream: #F5E6CA;
+    --dark-cream: #E8D5B7;
+    --light-cream: #FFF8E1;
+    --accent-gold: #FFA726;
+    --text-primary: #5D4037;
+    --text-secondary: #795548;
+    --bg-light: #FFF9F5;
     --white: #ffffff;
-    --shadow-light: rgba(0, 0, 0, 0.05);
-    --shadow-medium: rgba(0, 0, 0, 0.1);
-    --shadow-heavy: rgba(0, 0, 0, 0.2);
+    --shadow-light: rgba(255, 152, 0, 0.1);
+    --shadow-medium: rgba(255, 152, 0, 0.2);
+    --shadow-heavy: rgba(255, 152, 0, 0.3);
 }
 
 /* Global Styles */
 body {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    line-height: 1.6;
+    background: linear-gradient(135deg, var(--light-cream) 0%, var(--primary-cream) 50%, var(--bg-light) 100%);
 }
 
-.login-container {
-    position: relative;
-    min-height: 100vh;
-    overflow: hidden;
-}
-
-/* Background Elements */
-.background-elements {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.floating-shape {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.1;
-    animation: float 6s ease-in-out infinite;
-}
-
+/* Background Elements with New Colors */
 .shape-1 {
     width: 200px;
     height: 200px;
-    background: linear-gradient(45deg, var(--mint-primary), var(--mint-blue));
+    background: linear-gradient(45deg, var(--primary-orange), var(--primary-yellow));
     top: 10%;
     left: -5%;
+    animation: float 6s ease-in-out infinite;
     animation-delay: 0s;
 }
 
 .shape-2 {
     width: 150px;
     height: 150px;
-    background: linear-gradient(45deg, var(--mint-secondary), var(--mint-light));
+    background: linear-gradient(45deg, var(--dark-orange), var(--light-yellow));
     top: 60%;
     right: -3%;
+    animation: float 6s ease-in-out infinite;
     animation-delay: 2s;
 }
 
 .shape-3 {
     width: 100px;
     height: 100px;
-    background: linear-gradient(45deg, var(--mint-blue), var(--mint-primary));
+    background: linear-gradient(45deg, var(--primary-yellow), var(--accent-gold));
     top: 20%;
     right: 20%;
+    animation: float 6s ease-in-out infinite;
     animation-delay: 4s;
 }
 
 .shape-4 {
     width: 80px;
     height: 80px;
-    background: linear-gradient(45deg, var(--mint-light), var(--mint-secondary));
+    background: linear-gradient(45deg, var(--light-orange), var(--dark-yellow));
     bottom: 20%;
     left: 15%;
+    animation: float 6s ease-in-out infinite;
     animation-delay: 1s;
 }
 
@@ -211,13 +192,6 @@ body {
 
 /* Login Card */
 .login-card {
-    background: var(--white);
-    border-radius: 24px;
-    box-shadow: 0 20px 60px var(--shadow-medium);
-    overflow: hidden;
-    position: relative;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
     animation: slideInUp 0.8s ease;
 }
 
@@ -239,7 +213,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--mint-primary), var(--mint-blue), var(--mint-secondary));
+    background: linear-gradient(90deg, var(--primary-orange), var(--primary-yellow), var(--dark-orange));
     background-size: 200% 100%;
     animation: shimmer 3s ease infinite;
 }
@@ -249,25 +223,10 @@ body {
     100% { background-position: 200% 0; }
 }
 
-/* Card Header */
-.login-header {
-    padding: 3rem 2.5rem 2rem;
-    text-align: center;
-    position: relative;
-}
-
+/* Login Icon with New Colors */
 .login-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1.5rem;
-    background: linear-gradient(135deg, var(--mint-primary), var(--mint-blue));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: var(--white);
-    box-shadow: 0 10px 30px rgba(0, 201, 167, 0.3);
+    background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+    box-shadow: 0 10px 30px var(--shadow-medium);
     animation: pulse 2s ease infinite;
 }
 
@@ -276,222 +235,52 @@ body {
     50% { transform: scale(1.05); }
 }
 
-.login-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.login-subtitle {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin: 0;
-}
-
-/* Card Body */
-.login-body {
-    padding: 0 2.5rem 2.5rem;
-}
-
-/* Form Groups */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    display: block;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.5px;
-}
-
+/* Form Label Icons */
 .form-label i {
-    color: var(--mint-primary);
-    margin-right: 0.5rem;
+    color: var(--primary-orange);
 }
 
-/* Input Wrapper */
-.input-wrapper {
-    position: relative;
-}
-
-.form-input {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    font-size: 1rem;
-    color: var(--text-primary);
-    background: var(--bg-light);
-    border: 2px solid transparent;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    outline: none;
-}
-
+/* Input Focus Effects with New Colors */
 .form-input:focus {
     background: var(--white);
-    border-color: var(--mint-primary);
-    box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.1);
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 4px var(--shadow-light);
     transform: translateY(-2px);
 }
 
-.form-input::placeholder {
-    color: #adb5bd;
-    font-size: 0.95rem;
-}
-
 .input-focus-border {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--mint-primary), var(--mint-blue));
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-    border-radius: 2px;
+    background: linear-gradient(90deg, var(--primary-orange), var(--primary-yellow));
 }
 
 .form-input:focus + .input-focus-border {
     width: 100%;
 }
 
-/* Password Toggle */
-.password-toggle {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
+/* Password Toggle Hover */
 .password-toggle:hover {
-    color: var(--mint-primary);
-    background: rgba(0, 201, 167, 0.1);
+    color: var(--primary-orange);
+    background: var(--shadow-light);
 }
 
-/* Form Options */
-.form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-/* Custom Checkbox */
-.checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.checkbox-wrapper input[type="checkbox"] {
-    display: none;
-}
-
-.checkbox-custom {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #dee2e6;
-    border-radius: 4px;
-    margin-right: 0.75rem;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom {
-    background: var(--mint-primary);
-    border-color: var(--mint-primary);
-}
-
-.checkbox-wrapper input[type="checkbox"]:checked + .checkbox-custom::after {
-    content: '\f00c';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    color: white;
-    font-size: 12px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.checkbox-label {
-    user-select: none;
-}
-
-/* Forgot Password Link */
-.forgot-password {
-    color: var(--mint-primary);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.forgot-password:hover {
-    color: var(--mint-dark);
-    text-decoration: underline;
-}
-
-/* Login Button */
+/* Login Button with New Colors */
 .btn-login {
-    width: 100%;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, var(--mint-primary), var(--mint-blue));
-    color: var(--white);
-    border: none;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0, 201, 167, 0.4);
+    background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+    box-shadow: 0 4px 15px var(--shadow-medium);
 }
 
 .btn-login:hover {
-    background: linear-gradient(135deg, var(--mint-dark), #0671a6);
+    background: linear-gradient(135deg, var(--dark-orange), var(--accent-gold));
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 201, 167, 0.5);
+    box-shadow: 0 8px 25px var(--shadow-heavy);
 }
 
 .btn-login:active {
     transform: translateY(0);
-    box-shadow: 0 4px 15px rgba(0, 201, 167, 0.4);
-}
-
-.btn-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    box-shadow: 0 4px 15px var(--shadow-medium);
 }
 
 .btn-shine {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s ease;
 }
 
 .btn-login:hover .btn-shine {
@@ -499,12 +288,6 @@ body {
 }
 
 /* Divider */
-.divider {
-    text-align: center;
-    margin: 2rem 0;
-    position: relative;
-}
-
 .divider::before {
     content: '';
     position: absolute;
@@ -512,77 +295,56 @@ body {
     left: 0;
     right: 0;
     height: 1px;
-    background: #dee2e6;
+    background: var(--primary-cream);
 }
 
-.divider-text {
-    background: var(--white);
-    padding: 0 1rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    position: relative;
-    z-index: 1;
-}
-
-/* Register Link */
-.register-link {
-    text-align: center;
-}
-
-.register-link p {
-    color: var(--text-secondary);
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-}
-
+/* Register Button with New Colors */
 .btn-register {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: transparent;
-    color: var(--mint-primary);
-    border: 2px solid var(--mint-primary);
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    color: var(--primary-orange);
+    border-color: var(--primary-orange);
 }
 
 .btn-register:hover {
-    background: var(--mint-primary);
+    background: var(--primary-orange);
     color: var(--white);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 201, 167, 0.3);
+    box-shadow: 0 4px 15px var(--shadow-medium);
 }
 
 /* Error Messages */
-.error-message {
-    color: var(--danger-color);
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    background: #fff5f5;
-    border: 1px solid #fed7d7;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
 .form-input.is-invalid {
-    border-color: var(--danger-color);
+    border-color: #dc3545;
     background: #fff5f5;
 }
 
-/* Login Footer */
-.login-footer {
-    text-align: center;
-    margin-top: 2rem;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
+/* Loading State */
+.btn-login.loading {
+    pointer-events: none;
     opacity: 0.8;
+}
+
+.btn-login.loading .btn-content::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Focus Styles */
+.btn-login:focus,
+.btn-register:focus,
+.forgot-password:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px var(--shadow-light);
 }
 
 /* Responsive Design */
@@ -603,12 +365,6 @@ body {
         width: 70px;
         height: 70px;
         font-size: 1.75rem;
-    }
-    
-    .form-options {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
     }
     
     .floating-shape {
@@ -637,36 +393,6 @@ body {
         padding: 0.875rem 1.5rem;
         font-size: 1rem;
     }
-}
-
-/* Loading State */
-.btn-login.loading {
-    pointer-events: none;
-    opacity: 0.8;
-}
-
-.btn-login.loading .btn-content::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    border: 2px solid transparent;
-    border-top: 2px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Focus Styles for Accessibility */
-.btn-login:focus,
-.btn-register:focus,
-.forgot-password:focus {
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(0, 201, 167, 0.2);
 }
 </style>
 
